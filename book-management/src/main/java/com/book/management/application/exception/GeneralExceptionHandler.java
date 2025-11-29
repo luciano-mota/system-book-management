@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GeneralExceptionHandler {
 
-  @ExceptionHandler(ResourceNofFoundException.class)
-  public ResponseEntity<ErrorDTO> handleResourceNotFoundException(ResourceNofFoundException ex,
+  @ExceptionHandler(ResourceNotFoundException.class)
+  public ResponseEntity<ErrorDTO> handleResourceNotFoundException(ResourceNotFoundException ex,
       HttpServletRequest request) {
 
     return ResponseEntity.status(NOT_FOUND)

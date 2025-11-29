@@ -3,7 +3,7 @@ package com.book.management.application.controller.response;
 import static org.springframework.http.HttpStatus.CREATED;
 
 import com.book.management.application.controller.GenericRestReturnDTO;
-import com.book.management.application.exception.ResourceNofFoundException;
+import com.book.management.application.exception.ResourceNotFoundException;
 import com.book.management.application.mapper.BookMapper;
 import com.book.management.domain.usecase.DeleteBookUseCase;
 import com.book.management.domain.usecase.FindAllBookUseCase;
@@ -45,7 +45,7 @@ public class BookController implements BooksApi {
   public ResponseEntity<GenericRestReturnDTO> getBookById(HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse, Long id) {
     var book = findBookByIdUseCase.find(id).orElseThrow(
-        () -> new ResourceNofFoundException("Book not found with id: " + id));
+        () -> new ResourceNotFoundException("Book not found with id: " + id));
     return ResponseEntity.ok(new GenericRestReturnDTO(bookMapper.toResponse(book)));
   }
 

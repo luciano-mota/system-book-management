@@ -1,4 +1,4 @@
-package com.book.management.domain.entity;
+package com.book.management.domain.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

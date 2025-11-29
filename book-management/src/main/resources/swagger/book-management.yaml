@@ -1,0 +1,200 @@
+openapi: "3.0.4"
+info:
+  title: "Book Management API"
+  version: "1.0.0"
+  description: "API para gerenciar livros"
+servers:
+  - url: "http://localhost:8080"
+    description: "Ambiente local"
+tags:
+  - name: Books
+    description: "Operações relacionadas a livros"
+
+paths:
+  /books:
+    get:
+      tags:
+        - Books
+      summary: "List of Books"
+      operationId: getAllBooks
+      responses:
+        '200':
+          description: "Book List"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponseData'
+    post:
+      tags:
+        - Books
+      summary: "Create a new Book"
+      operationId: createBook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookRequestDTO'
+      responses:
+        '201':
+          description: "Livro criado"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponseData'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /books/{id}:
+    parameters:
+      - $ref: '#/components/parameters/IdParam'
+    get:
+      tags:
+        - Books
+      summary: "Find book by ID"
+      operationId: getBookById
+      responses:
+        '200':
+          description: "Book found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponseData'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags:
+        - Books
+      summary: "Update book by ID"
+      operationId: updateBook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookRequestDTO'
+      responses:
+        '200':
+          description: "Book updated"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponseData'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+        - Books
+      summary: "Delete book"
+      operationId: deleteBook
+      responses:
+        '204':
+          description: "Book deleted successfully"
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+components:
+  parameters:
+    IdParam:
+      name: "id"
+      in: "path"
+      description: "Book ID"
+      required: true
+      schema:
+        type: integer
+        format: int64
+
+  schemas:
+    BookResponseData:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookResponseDTO'
+    BookResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        author:
+          type: string
+        publishedDate:
+          type: string
+          format: date
+        value:
+          type: string
+          format: decimal
+        authors:
+          type: array
+          items:
+            type: integer
+        subjects:
+          type: array
+          items:
+            type: integer
+      required: ["id", "title", "author"]
+
+    BookRequestDTO:
+      type: object
+      properties:
+        title:
+          type: string
+        author:
+          type: string
+        publishedDate:
+          type: string
+          format: date
+        value:
+          type: string
+          format: decimal
+        authorsIds:
+          type: array
+          items:
+            type: integer
+        subjectsIds:
+          type: array
+          items:
+            type: integer
+      required: ["title", "author"]
+
+    Error:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        message:
+          type: string
+        path:
+          type: string
+      required: ["code", "message"]
+
+  responses:
+    BadRequest:
+      description: "Requisição inválida"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: "Recurso não encontrado"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalError:
+      description: "Erro interno do servidor"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

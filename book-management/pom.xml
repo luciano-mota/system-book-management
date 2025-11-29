@@ -21,6 +21,8 @@
 		<java.version>21</java.version>
 		<mapstruct.version>1.6.3</mapstruct.version>
 		<lombok.version>1.18.34</lombok.version>
+    <swagger.version>1.6.16</swagger.version>
+    <swagger-core.v3.version>2.2.8</swagger-core.v3.version>
 	</properties>
 
 	<dependencies>
@@ -60,6 +62,17 @@
       <groupId>org.mapstruct</groupId>
       <artifactId>mapstruct</artifactId>
       <version>${mapstruct.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.swagger</groupId>
+      <artifactId>swagger-annotations</artifactId>
+      <version>${swagger.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.swagger.core.v3</groupId>
+      <artifactId>swagger-annotations</artifactId>
+      <version>${swagger-core.v3.version}</version>
     </dependency>
   </dependencies>
 
@@ -102,6 +115,31 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+      <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <version>6.2.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <skipValidateSpec>true</skipValidateSpec>
+              <inputSpec>./src/main/resources/swagger/book-management.yaml</inputSpec>
+              <templateDirectory>./src/main/resources/swagger/templates</templateDirectory>
+              <generatorName>spring</generatorName>
+              <configOptions>
+                <openApiNullable>false</openApiNullable>
+                <interfaceOnly>true</interfaceOnly>
+                <useTags>true</useTags>
+                <useOperationIdAsMethodName>true</useOperationIdAsMethodName>
+              </configOptions>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 		</plugins>
 	</build>
 

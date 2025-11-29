@@ -1,4 +1,4 @@
-package com.book.management.application.dto.response;
+package com.book.management.application.controller.response;
 
 import java.util.List;
 

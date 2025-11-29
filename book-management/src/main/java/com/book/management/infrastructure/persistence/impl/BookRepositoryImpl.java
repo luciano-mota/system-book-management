@@ -29,28 +29,31 @@ public class BookRepositoryImpl implements BookRepository {
 
   @Override
   public Book save(Book book) {
-    //var bookEntity = BookMapper.toEntity(book);
-    return null;
+    var bookEntity = toEntity(book);
+    var savedEntity = bookJpaRepository.save(bookEntity);
+    return toModel(savedEntity);
   }
 
   @Override
   public Optional<Book> findById(Long id) {
-    return Optional.empty();
+    return bookJpaRepository.findById(id).map(this::toModel);
   }
 
   @Override
   public List<Book> findAll() {
-    return List.of();
+    return bookJpaRepository.findAll().stream()
+        .map(this::toModel)
+        .toList();
   }
 
   @Override
   public void deleteById(Long id) {
-
+    bookJpaRepository.deleteById(id);
   }
 
   @Override
   public boolean existsById(Long id) {
-    return false;
+    return bookJpaRepository.existsById(id);
   }
 
   private BookEntity toEntity(Book book) {
@@ -81,12 +84,12 @@ public class BookRepositoryImpl implements BookRepository {
     var authorsIds = isNull(bookEntity.getAuthors()) ? null :
         bookEntity.getAuthors().stream()
             .map(AuthorEntity::getId)
-            .collect(Collectors.toList());
+            .toList();
 
     var subjectsIds = isNull(bookEntity.getSubjects()) ? null :
         bookEntity.getSubjects().stream()
             .map(SubjectEntity::getId)
-            .collect(Collectors.toList());
+            .toList();
 
     return new Book(
         bookEntity.getId(),

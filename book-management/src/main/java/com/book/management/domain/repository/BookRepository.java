@@ -1,6 +1,6 @@
 package com.book.management.domain.repository;
 
-import com.book.management.domain.entity.Book;
+import com.book.management.domain.model.Book;
 import java.util.List;
 import java.util.Optional;
 

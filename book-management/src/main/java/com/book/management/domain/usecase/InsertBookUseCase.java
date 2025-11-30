@@ -6,6 +6,13 @@ import com.book.management.domain.repository.BookRepository;
 public record InsertBookUseCase(BookRepository bookRepository) {
 
   public Book insert(Book book) {
-    return bookRepository.save(book);
+    var newBook = Book.newBook(
+        book.getTitle(),
+        book.getPublicationDate(),
+        book.getValue(),
+        book.getAuthorsIds(),
+        book.getSubjectsIds()
+    );
+    return bookRepository.save(newBook);
   }
 }

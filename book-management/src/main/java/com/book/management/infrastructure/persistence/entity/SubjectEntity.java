@@ -26,4 +26,8 @@ public class SubjectEntity {
 
   @Column(nullable = false, length = 150)
   private String description;
+
+  public SubjectEntity(String description) {
+    this.description = description;
+  }
 }

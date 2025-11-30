@@ -99,7 +99,7 @@ public interface {{classname}} {
         produces = { {{#produces}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/produces}} }, {{/hasProduces}}{{#hasConsumes}}
         consumes = { {{#consumes}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/consumes}} },{{/hasConsumes}}{{/singleContentTypes}}
     method = RequestMethod.{{httpMethod}})
-    {{#responseWrapper}}{{.}}<{{/responseWrapper}}ResponseEntity<GenericRestReturnDTO>{{#responseWrapper}}>{{/responseWrapper}} {{#delegate-method}}_{{/delegate-method}}{{operationId}}(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse{{#allParams}},{{>pathParams}}{{>bodyParams}}{{#isFormParam}}@RequestParam(value="{{baseName}}"{{^required}}, required=false{{/required}}) {{^isFile}}{{{dataType}}}{{/isFile}} {{#isFile}}MultipartFile{{/isFile}} {{paramName}}{{/isFormParam}}{{>queryParams}}{{#hasMore}}{{^-last}}{{/-last}}{{/hasMore}}{{/allParams}});
+    {{#responseWrapper}}{{.}}<{{/responseWrapper}}ResponseEntity<GenericRestReturnDTO>{{#responseWrapper}}>{{/responseWrapper}} {{#delegate-method}}_{{/delegate-method}}{{operationId}}(HttpServletRequest httpServletRequest{{#allParams}},{{>pathParams}}{{>bodyParams}}{{#isFormParam}}@RequestParam(value="{{baseName}}"{{^required}}, required=false{{/required}}) {{^isFile}}{{{dataType}}}{{/isFile}} {{#isFile}}MultipartFile{{/isFile}} {{paramName}}{{/isFormParam}}{{>queryParams}}{{#hasMore}}{{^-last}}{{/-last}}{{/hasMore}}{{/allParams}});
 {{/operation}}
 }
 {{/operations}}

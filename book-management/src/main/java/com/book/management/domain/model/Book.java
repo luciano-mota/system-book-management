@@ -13,9 +13,7 @@ public class Book {
   private List<Long> authorsIds;
   private List<Long> subjectsIds;
 
-  public Book() {
-
-  }
+  public Book() {}
 
   public Book(Long id, String title, LocalDate publicationDate, BigDecimal value,
       List<Long> authorsIds, List<Long> subjectsIds) {
@@ -28,8 +26,8 @@ public class Book {
   }
 
   public static Book newBook(String title, LocalDate publicationDate, BigDecimal value,
-      List<Long> authorsIds, List<Long> mattersIds) {
-    return new Book(null, title, publicationDate, value, authorsIds, mattersIds);
+      List<Long> authorsIds, List<Long> subjectsIds) {
+    return new Book(null, title, publicationDate, value, authorsIds, subjectsIds);
   }
 
   public Long getId() {

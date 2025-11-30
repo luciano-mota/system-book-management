@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface AuthorRepository {
 
-  Author author(Author author);
+  Author save(Author author);
 
   Optional<Author> findById(Long id);
 

@@ -1,8 +1,7 @@
-package com.book.management.application.controller.response;
+package com.book.management.application.controller;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
-import com.book.management.application.controller.GenericRestReturnDTO;
 import com.book.management.application.exception.ResourceNotFoundException;
 import com.book.management.application.mapper.BookMapper;
 import com.book.management.domain.usecase.DeleteBookUseCase;
@@ -11,16 +10,13 @@ import com.book.management.domain.usecase.FindBookByIdUseCase;
 import com.book.management.domain.usecase.InsertBookUseCase;
 import com.book.management.domain.usecase.UpdateBookUseCase;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.api.BooksApi;
 import org.openapitools.model.BookRequestDTO;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/books")
 @RequiredArgsConstructor
 public class BookController implements BooksApi {
 
@@ -33,8 +29,7 @@ public class BookController implements BooksApi {
   private final BookMapper bookMapper;
 
   @Override
-  public ResponseEntity<GenericRestReturnDTO> createBook(HttpServletRequest httpServletRequest,
-      HttpServletResponse httpServletResponse, BookRequestDTO bookRequestDTO) {
+  public ResponseEntity<GenericRestReturnDTO> createBook(HttpServletRequest httpServletRequest, BookRequestDTO bookRequestDTO) {
     var book = bookMapper.toDomain(bookRequestDTO);
     var savedBook = insertBookUseCase.insert(book);
 
@@ -42,26 +37,24 @@ public class BookController implements BooksApi {
   }
 
   @Override
-  public ResponseEntity<GenericRestReturnDTO> getBookById(HttpServletRequest httpServletRequest,
-      HttpServletResponse httpServletResponse, Long id) {
+  public ResponseEntity<GenericRestReturnDTO> getBookById(HttpServletRequest httpServletRequest, Long id) {
     var book = findBookByIdUseCase.find(id).orElseThrow(
         () -> new ResourceNotFoundException("Book not found with id: " + id));
+
     return ResponseEntity.ok(new GenericRestReturnDTO(bookMapper.toResponse(book)));
   }
 
   @Override
-  public ResponseEntity<GenericRestReturnDTO> getAllBooks(HttpServletRequest httpServletRequest,
-      HttpServletResponse httpServletResponse) {
-    var books = findAllBookUseCase.find();
-    var bookResponse = books.stream()
+  public ResponseEntity<GenericRestReturnDTO> getAllBooks(HttpServletRequest httpServletRequest) {
+    var books = findAllBookUseCase.find().stream()
         .map(bookMapper::toResponse)
         .toList();
-    return ResponseEntity.ok(new GenericRestReturnDTO(bookResponse));
+
+    return ResponseEntity.ok(new GenericRestReturnDTO(books));
   }
 
   @Override
-  public ResponseEntity<GenericRestReturnDTO> updateBook(HttpServletRequest httpServletRequest,
-      HttpServletResponse httpServletResponse, Long id, BookRequestDTO bookRequestDTO) {
+  public ResponseEntity<GenericRestReturnDTO> updateBook(HttpServletRequest httpServletRequest, Long id, BookRequestDTO bookRequestDTO) {
     var book = bookMapper.toDomain(bookRequestDTO);
     book.setId(id);
     var updatedBook = updateBookUseCase.update(book);
@@ -70,8 +63,7 @@ public class BookController implements BooksApi {
   }
 
   @Override
-  public ResponseEntity<GenericRestReturnDTO> deleteBook(HttpServletRequest httpServletRequest,
-      HttpServletResponse httpServletResponse, Long id) {
+  public ResponseEntity<GenericRestReturnDTO> deleteBook(HttpServletRequest httpServletRequest, Long id) {
     deleteBookUseCase.delete(id);
     return ResponseEntity.noContent().build();
   }

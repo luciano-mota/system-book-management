@@ -10,8 +10,11 @@ tags:
   - name: Books
     description: "Operações relacionadas a livros"
 
+  - name: Authors
+    description: "Operações relacionadas a autores"
+
 paths:
-  /books:
+  /api/v1/books:
     get:
       tags:
         - Books
@@ -46,8 +49,7 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalError'
-
-  /books/{id}:
+  /api/v1books/{id}:
     parameters:
       - $ref: '#/components/parameters/IdParam'
     get:
@@ -96,6 +98,90 @@ paths:
           description: "Book deleted successfully"
         '404':
           $ref: '#/components/responses/NotFound'
+  /api/v1/authors:
+    post:
+      tags:
+        - Authors
+      summary: "Create a new Author"
+      operationId: createAuthor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorRequestDTO'
+      responses:
+        '201':
+          description: "Author created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorResponseData'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    get:
+      tags:
+        - Authors
+      summary: "List of Authors"
+      operationId: getAllAuthors
+      responses:
+        '200':
+          description: "Author List"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorResponseData'
+  /api/v1/authors/{id}:
+    parameters:
+      - $ref: '#/components/parameters/IdParam'
+    get:
+      tags:
+        - Authors
+      summary: "Find author by ID"
+      operationId: getAuthorById
+      responses:
+        '200':
+          description: "Author found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorResponseData'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags:
+        - Authors
+      summary: "Update author by ID"
+      operationId: updateAuthor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorRequestDTO'
+      responses:
+        '200':
+          description: "Author updated"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorResponseData'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+        - Authors
+      summary: "Delete author"
+      operationId: deleteAuthor
+      responses:
+        '204':
+          description: "Author deleted successfully"
+        '404':
+          $ref: '#/components/responses/NotFound'
 
 components:
   parameters:
@@ -107,8 +193,37 @@ components:
       schema:
         type: integer
         format: int64
-
   schemas:
+    BookRequestDTO:
+      type: object
+      properties:
+        title:
+          type: string
+        author:
+          type: string
+        publishedDate:
+          type: string
+          format: date
+        value:
+          type: string
+          format: decimal
+        authorsIds:
+          type: array
+          items:
+            type: integer
+        subjectsIds:
+          type: array
+          items:
+            type: integer
+      required: ["title", "author"]
+    AuthorRequestDTO:
+      type: object
+      properties:
+        name:
+          type: string
+        biography:
+          type: string
+      required: ["name"]
     BookResponseData:
       type: object
       properties:
@@ -142,29 +257,23 @@ components:
             type: integer
       required: ["id", "title", "author"]
 
-    BookRequestDTO:
+    AuthorResponseData:
       type: object
       properties:
-        title:
-          type: string
-        author:
-          type: string
-        publishedDate:
-          type: string
-          format: date
-        value:
-          type: string
-          format: decimal
-        authorsIds:
+        data:
           type: array
           items:
-            type: integer
-        subjectsIds:
-          type: array
-          items:
-            type: integer
-      required: ["title", "author"]
-
+            $ref: '#/components/schemas/AuthorResponseDTO'
+    AuthorResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        biography:
+          type: string
     Error:
       type: object
       properties:

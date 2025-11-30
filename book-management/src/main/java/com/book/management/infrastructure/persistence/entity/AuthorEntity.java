@@ -26,4 +26,8 @@ public class AuthorEntity {
 
   @Column(nullable = false, length = 150)
   private String name;
+
+  public AuthorEntity(String name) {
+    this.name = name;
+  }
 }

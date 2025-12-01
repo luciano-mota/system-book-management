@@ -11,7 +11,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,26 +31,34 @@ public class BookEntity {
   @GeneratedValue(strategy = IDENTITY)
   private Long id;
 
-  @Column(nullable = false, length = 200)
+  private Integer bookCode;
+
+  @Column(nullable = false, length = 40)
   private String title;
 
-  @Column(name = "publication_date")
-  private LocalDate publicationDate;
+  @Column(nullable = false, length = 40)
+  private String publisher;
+
+  @Column(nullable = false, length = 40)
+  private String edition;
+
+  @Column(nullable = false, length = 4)
+  private String publicationDate;
 
   @Column(nullable = false, precision = 15, scale = 2)
-  private BigDecimal value;
+  private BigDecimal price;
 
   @ManyToMany
   @JoinTable(
       name = "tb_book_author",
-      joinColumns = @JoinColumn(name = "book_id"),
-      inverseJoinColumns = @JoinColumn(name = "author_id"))
+      joinColumns = @JoinColumn(name = "book_code"),
+      inverseJoinColumns = @JoinColumn(name = "author_code"))
   private Set<AuthorEntity> authors;
 
   @ManyToMany
   @JoinTable(
       name = "tb_book_subject",
-      joinColumns = @JoinColumn(name = "book_id"),
-      inverseJoinColumns = @JoinColumn(name = "subject_id"))
+      joinColumns = @JoinColumn(name = "book_code"),
+      inverseJoinColumns = @JoinColumn(name = "subject_code"))
   private Set<SubjectEntity> subjects;
 }

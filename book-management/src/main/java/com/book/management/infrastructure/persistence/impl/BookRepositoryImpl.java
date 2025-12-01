@@ -5,6 +5,7 @@ import static java.util.Objects.nonNull;
 
 import com.book.management.domain.model.Book;
 import com.book.management.domain.repository.BookRepository;
+import com.book.management.infrastructure.exception.IsNotFoundException;
 import com.book.management.infrastructure.persistence.entity.AuthorEntity;
 import com.book.management.infrastructure.persistence.entity.BookEntity;
 import com.book.management.infrastructure.persistence.entity.SubjectEntity;
@@ -12,11 +13,13 @@ import com.book.management.infrastructure.persistence.repository.AuthorJpaReposi
 import com.book.management.infrastructure.persistence.repository.BookJpaRepository;
 import com.book.management.infrastructure.persistence.repository.SubjectJpaRepository;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
@@ -28,6 +31,7 @@ public class BookRepositoryImpl implements BookRepository {
 
 
   @Override
+  @Transactional
   public Book save(Book book) {
     var bookEntity = toEntity(book);
     var savedEntity = bookJpaRepository.save(bookEntity);
@@ -35,11 +39,15 @@ public class BookRepositoryImpl implements BookRepository {
   }
 
   @Override
-  public Optional<Book> findById(Long id) {
-    return bookJpaRepository.findById(id).map(this::toModel);
+  @Transactional(readOnly = true)
+  public Book findById(Long id) {
+    var bookEntity = bookJpaRepository.findById(id)
+        .orElseThrow(() -> new IsNotFoundException("Book not found with id: " + id));
+    return toModel(bookEntity);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public List<Book> findAll() {
     return bookJpaRepository.findAll().stream()
         .map(this::toModel)
@@ -48,12 +56,13 @@ public class BookRepositoryImpl implements BookRepository {
 
   @Override
   public void deleteById(Long id) {
-    bookJpaRepository.deleteById(id);
-  }
-
-  @Override
-  public boolean existsById(Long id) {
-    return bookJpaRepository.existsById(id);
+    try {
+      bookJpaRepository.deleteById(id);
+    } catch (EmptyResultDataAccessException e) {
+      throw new IsNotFoundException("Book not found with id: " + id);
+    } catch (DataIntegrityViolationException e) {
+      throw new IllegalStateException("Integrity violation");
+    }
   }
 
   private BookEntity toEntity(Book book) {

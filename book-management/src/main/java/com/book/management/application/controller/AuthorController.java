@@ -32,7 +32,8 @@ public class AuthorController implements AuthorsApi {
     var author = authorMapper.toDomain(authorRequestDTO);
     var savedAuthor = insertAuthorUseCase.create(author);
 
-    return ResponseEntity.status(CREATED).body(new GenericRestReturnDTO(savedAuthor));
+    return ResponseEntity.status(CREATED)
+        .body(new GenericRestReturnDTO(authorMapper.toResponse(savedAuthor)));
   }
 
   @Override

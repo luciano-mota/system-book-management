@@ -1,4 +1,4 @@
-package com.book.management.application.exception;
+package com.book.management.application.handler;
 
 import lombok.Builder;
 import lombok.Data;

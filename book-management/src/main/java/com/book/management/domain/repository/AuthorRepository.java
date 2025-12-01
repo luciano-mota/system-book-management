@@ -2,13 +2,12 @@ package com.book.management.domain.repository;
 
 import com.book.management.domain.model.Author;
 import java.util.List;
-import java.util.Optional;
 
 public interface AuthorRepository {
 
   Author save(Author author);
 
-  Optional<Author> findById(Long id);
+  Author findById(Long id);
 
   List<Author> findAll();
 

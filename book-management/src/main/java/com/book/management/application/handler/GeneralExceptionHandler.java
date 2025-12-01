@@ -1,8 +1,9 @@
-package com.book.management.application.exception;
+package com.book.management.application.handler;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
+import com.book.management.infrastructure.exception.IsNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GeneralExceptionHandler {
 
-  @ExceptionHandler(ResourceNotFoundException.class)
-  public ResponseEntity<ErrorDTO> handleResourceNotFoundException(ResourceNotFoundException ex,
+  @ExceptionHandler(IsNotFoundException.class)
+  public ResponseEntity<ErrorDTO> handleResourceNotFoundException(IsNotFoundException ex,
       HttpServletRequest request) {
 
     return ResponseEntity.status(NOT_FOUND)

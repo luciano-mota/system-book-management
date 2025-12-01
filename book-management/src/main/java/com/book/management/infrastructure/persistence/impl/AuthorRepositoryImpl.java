@@ -2,11 +2,11 @@ package com.book.management.infrastructure.persistence.impl;
 
 import com.book.management.domain.model.Author;
 import com.book.management.domain.repository.AuthorRepository;
+import com.book.management.infrastructure.exception.IsNotFoundException;
 import com.book.management.infrastructure.persistence.entity.AuthorEntity;
 import com.book.management.infrastructure.persistence.repository.AuthorJpaRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -25,9 +25,10 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
   @Override
   @Transactional
-  public Optional<Author> findById(Long id) {
-    return authorJpaRepository.findById(id)
-        .map(authorEntity -> new Author(authorEntity.getId(), authorEntity.getName()));
+  public Author findById(Long id) {
+    var authorEntity = authorJpaRepository.findById(id)
+        .orElseThrow(() -> new IsNotFoundException("Author not found with id: " + id));
+    return new Author(authorEntity.getId(), authorEntity.getName());
   }
 
   @Override

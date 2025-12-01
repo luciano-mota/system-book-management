@@ -6,7 +6,7 @@ import com.book.management.domain.repository.AuthorRepository;
 public record UpdateAuthorUseCase(AuthorRepository authorRepository) {
 
   public Author update(Author author) {
-    var authorUpdated = authorRepository.findById(author.getId()).get();
+    var authorUpdated = authorRepository.findById(author.getId());
     return authorRepository.save(authorUpdated);
   }
 }

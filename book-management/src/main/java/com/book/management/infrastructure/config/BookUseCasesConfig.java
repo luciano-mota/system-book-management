@@ -34,7 +34,7 @@ public class BookUseCasesConfig {
 
   @Bean
   public UpdateBookUseCase updateBookUseCase() {
-    return new UpdateBookUseCase(bookRepository, findBookByIdUseCase);
+    return new UpdateBookUseCase(bookRepository);
   }
 
   @Bean

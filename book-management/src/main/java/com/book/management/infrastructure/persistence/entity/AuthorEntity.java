@@ -21,10 +21,11 @@ import lombok.NoArgsConstructor;
 public class AuthorEntity {
 
   @Id
+  @Column(name = "author_code")
   @GeneratedValue(strategy = IDENTITY)
   private Long id;
 
-  @Column(nullable = false, length = 150)
+  @Column(nullable = false, length = 40)
   private String name;
 
   public AuthorEntity(String name) {

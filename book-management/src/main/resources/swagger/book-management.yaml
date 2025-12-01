@@ -13,6 +13,9 @@ tags:
   - name: Authors
     description: "Operações relacionadas a autores"
 
+  - name: Subjects
+    description: "Operações relacionadas a assuntos"
+
 paths:
   /api/v1/books:
     get:
@@ -49,7 +52,7 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalError'
-  /api/v1books/{id}:
+  /api/v1/books/{id}:
     parameters:
       - $ref: '#/components/parameters/IdParam'
     get:
@@ -182,6 +185,90 @@ paths:
           description: "Author deleted successfully"
         '404':
           $ref: '#/components/responses/NotFound'
+  /api/v1/subjects:
+    post:
+      tags:
+        - Subjects
+      summary: "Create a new Subject"
+      operationId: createSubject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubjectRequestDTO'
+      responses:
+        '201':
+          description: "Subject created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubjectResponseData'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    get:
+      tags:
+        - Subjects
+      summary: "List of Subjects"
+      operationId: getAllSubjects
+      responses:
+        '200':
+          description: "Subject List"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubjectResponseData'
+  /api/v1/subjects/{id}:
+    parameters:
+      - $ref: '#/components/parameters/IdParam'
+    get:
+      tags:
+        - Subjects
+      summary: "Find subject by ID"
+      operationId: getSubjectById
+      responses:
+        '200':
+          description: "Subject found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubjectResponseData'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags:
+        - Subjects
+      summary: "Update subject by ID"
+      operationId: updateSubject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubjectRequestDTO'
+      responses:
+        '200':
+          description: "Subject updated"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubjectResponseData'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+        - Subjects
+      summary: "Delete subject"
+      operationId: deleteSubject
+      responses:
+        '204':
+          description: "Subject deleted successfully"
+        '404':
+          $ref: '#/components/responses/NotFound'
 
 components:
   parameters:
@@ -221,9 +308,14 @@ components:
       properties:
         name:
           type: string
-        biography:
-          type: string
       required: ["name"]
+    SubjectRequestDTO:
+      type: object
+      properties:
+        name:
+          type: string
+      required: ["description"]
+
     BookResponseData:
       type: object
       properties:
@@ -272,8 +364,23 @@ components:
           format: int64
         name:
           type: string
-        biography:
+      required: ["id", "name"]
+    SubjectResponseData:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubjectResponseDTO'
+    SubjectResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
           type: string
+      required: ["id", "name"]
     Error:
       type: object
       properties:

@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Configuration;
 public class BookUseCasesConfig {
 
   private final BookRepository bookRepository;
-  private final FindBookByIdUseCase findBookByIdUseCase;
 
   @Bean
   public InsertBookUseCase insertBookUseCase() {

@@ -6,11 +6,16 @@ import com.book.management.domain.usecase.FindAllBookUseCase;
 import com.book.management.domain.usecase.FindBookByIdUseCase;
 import com.book.management.domain.usecase.InsertBookUseCase;
 import com.book.management.domain.usecase.UpdateBookUseCase;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public record BookUseCasesConfig(BookRepository bookRepository, FindBookByIdUseCase findBookByIdUseCase) {
+@RequiredArgsConstructor
+public class BookUseCasesConfig {
+
+  private final BookRepository bookRepository;
+  private final FindBookByIdUseCase findBookByIdUseCase;
 
   @Bean
   public InsertBookUseCase insertBookUseCase() {

@@ -1,20 +1,20 @@
 spring:
   application:
     name: book-management
-    datasource:
-      url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/bookdb}
-      username: ${SPRING_DATASOURCE_USERNAME:postgres}
-      password: ${SPRING_DATASOURCE_PASSWORD:password}
-      driver-class-name: com.postgresql.Driver
-      hikari:
-        maximum-pool-size:10
-    jpa:
-      properties:
-        hibernate:
-          dialect: org.hibernate.dialect.PostgreSQLDialect
-      database: postgresql
-      show-sql: true
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/bookdb}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:password}
+    driver-class-name: com.postgresql.Driver
+    hikari:
+      maximum-pool-size:10
+  jpa:
+    properties:
       hibernate:
-        ddl-auto: none
-    flyway:
-      baseline-on-migrate: ${SPRING_FLYWAY_BASELINE_ON_MIGRATE:true}
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    database: postgresql
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  flyway:
+    baseline-on-migrate: ${SPRING_FLYWAY_BASELINE_ON_MIGRATE:true}

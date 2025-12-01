@@ -9,7 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public record SubjectUseCasesConfig(SubjectRepository subjectRepository) {
+public class SubjectUseCasesConfig {
+
+  private SubjectRepository subjectRepository;
 
   @Bean
   public InsertSubjectUseCase insertSubjectUseCase() {

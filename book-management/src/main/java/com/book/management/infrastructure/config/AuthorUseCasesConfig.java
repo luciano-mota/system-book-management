@@ -6,11 +6,15 @@ import com.book.management.domain.usecase.FindAllAuthorUseCase;
 import com.book.management.domain.usecase.FindAuthorByIdUseCase;
 import com.book.management.domain.usecase.InsertAuthorUseCase;
 import com.book.management.domain.usecase.UpdateAuthorUseCase;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public record AuthorUseCasesConfig(AuthorRepository authorRepository) {
+@RequiredArgsConstructor
+public class AuthorUseCasesConfig {
+
+  private final AuthorRepository authorRepository;
 
   @Bean
   public InsertAuthorUseCase insertAuthorUseCase() {

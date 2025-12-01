@@ -59,9 +59,12 @@ public class BookRepositoryImpl implements BookRepository {
   private BookEntity toEntity(Book book) {
     var bookEntity = BookEntity.builder()
         .id(book.getId())
+        .bookCode(book.getBookCode())
         .title(book.getTitle())
-        .publicationDate(book.getPublicationDate())
-        .value(book.getValue())
+        .publisher(book.getPublisher())
+        .edition(book.getEdition())
+        .publicationDate(book.getYearPublication())
+        .price(book.getPrice())
         .build();
 
     if (nonNull(book.getAuthorsIds())){
@@ -93,9 +96,12 @@ public class BookRepositoryImpl implements BookRepository {
 
     return new Book(
         bookEntity.getId(),
+        bookEntity.getBookCode(),
         bookEntity.getTitle(),
+        bookEntity.getPublisher(),
+        bookEntity.getEdition(),
         bookEntity.getPublicationDate(),
-        bookEntity.getValue(),
+        bookEntity.getPrice(),
         authorsIds,
         subjectsIds
     );

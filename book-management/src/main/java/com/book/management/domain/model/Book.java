@@ -10,29 +10,29 @@ public class Book {
   private String title;
   private String publisher;
   private String edition;
-  private String publicationDate;
+  private String yearPublication;
   private BigDecimal price;
   private List<Long> authorsIds;
   private List<Long> subjectsIds;
 
   public Book() {}
 
-  public Book(Long id, Integer bookCode, String title, String publisher, String edition, String publicationDate, BigDecimal price,
+  public Book(Long id, Integer bookCode, String title, String publisher, String edition, String yearPublication, BigDecimal price,
       List<Long> authorsIds, List<Long> subjectsIds) {
     this.id = id;
     this.bookCode = bookCode;
     this.title = title;
     this.publisher = publisher;
     this.edition = edition;
-    this.publicationDate = publicationDate;
+    this.yearPublication = yearPublication;
     this.price = price;
     this.authorsIds = authorsIds;
     this.subjectsIds = subjectsIds;
   }
 
-  public static Book newBook(Integer bookCode, String title, String publisher, String edition, String publicationDate, BigDecimal price,
+  public static Book newBook(Integer bookCode, String title, String publisher, String edition, String yearPublication, BigDecimal price,
       List<Long> authorsIds, List<Long> subjectsIds) {
-    return new Book(null, bookCode, title, publisher, edition, publicationDate, price, authorsIds, subjectsIds);
+    return new Book(null, bookCode, title, publisher, edition, yearPublication, price, authorsIds, subjectsIds);
   }
 
   public Long getId() {
@@ -75,12 +75,12 @@ public class Book {
     this.edition = edition;
   }
 
-  public String getPublicationDate() {
-    return publicationDate;
+  public String getYearPublication() {
+    return yearPublication;
   }
 
-  public void setPublicationDate(String publicationDate) {
-    this.publicationDate = publicationDate;
+  public void setYearPublication(String yearPublication) {
+    this.yearPublication = yearPublication;
   }
 
   public BigDecimal getPrice() {

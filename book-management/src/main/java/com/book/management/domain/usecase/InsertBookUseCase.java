@@ -7,9 +7,12 @@ public record InsertBookUseCase(BookRepository bookRepository) {
 
   public Book insert(Book book) {
     var newBook = Book.newBook(
+        book.getBookCode(),
         book.getTitle(),
-        book.getPublicationDate(),
-        book.getValue(),
+        book.getPublisher(),
+        book.getEdition(),
+        book.getYearPublication(),
+        book.getPrice(),
         book.getAuthorsIds(),
         book.getSubjectsIds()
     );

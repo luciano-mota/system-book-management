@@ -329,14 +329,19 @@ components:
         id:
           type: integer
           format: int64
+        bookCode:
+          type: string
+          example: "BK-123456"
         title:
           type: string
-        author:
+        publisher:
           type: string
-        publishedDate:
+        edition:
           type: string
-          format: date
-        value:
+        yearPublication:
+          type: string
+          example: "2023"
+        price:
           type: string
           format: decimal
         authors:
@@ -347,7 +352,15 @@ components:
           type: array
           items:
             type: integer
-      required: ["id", "title", "author"]
+      required:
+        - bookCode
+        - title
+        - publisher
+        - edition
+        - yearPublication
+        - price
+        - authors
+        - subjects
 
     AuthorResponseData:
       type: object

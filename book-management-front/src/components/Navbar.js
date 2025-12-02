@@ -19,9 +19,6 @@ export default function Navbar() {
             <li className="nav-item">
               <NavLink className="nav-link" to="/subjects">Assuntos</NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/report">Relatório</NavLink>
-            </li>
           </ul>
         </div>
       </div>

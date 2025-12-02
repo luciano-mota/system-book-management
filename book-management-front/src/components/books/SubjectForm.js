@@ -67,7 +67,7 @@ export default function SubjectForm({ onSubjectSelected }) {
           required
         />
         {searchResults.length > 0 && (
-          <ul className="list-group position-absolute w-100" style={{ zIndex: 1000 }}>
+          <ul className="list-group position-absolute w-100" style={{ zIndex: 1000, maxHeight: '200px', overflowY: 'auto' }}>
             {searchResults.map(subject => (
               <li
                 key={subject.id}

@@ -8,11 +8,14 @@ import org.springframework.data.repository.query.Param;
 
 public interface SubjectJpaRepository extends JpaRepository<SubjectEntity, Long> {
 
-  @Query("""
-      SELECT s FROM SubjectEntity s
-      WHERE (:description IS NULL OR UPPER(s.description)
-      LIKE UPPER(CONCAT('%', :description, '%')))
-      ORDER BY s.description ASC
-      """)
-  List<SubjectEntity> findAllSubjectEntityOrByDescription(@Param("description") String description);
+  @Query(
+      value = """
+          SELECT * FROM tb_subject s
+          WHERE (:description IS NULL OR UPPER(s.description)
+          LIKE UPPER(CONCAT('%', :description, '%')))
+          ORDER BY s.description ASC
+          """,
+      nativeQuery = true
+  )
+  List<SubjectEntity> findAllSubjectOrByDescription(@Param("description") String description);
 }

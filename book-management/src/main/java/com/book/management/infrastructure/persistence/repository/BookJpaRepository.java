@@ -8,10 +8,13 @@ import org.springframework.data.repository.query.Param;
 
 public interface BookJpaRepository extends JpaRepository<BookEntity, Long> {
 
-  @Query("""
-      SELECT b FROM BookEntity b
-      WHERE (:name IS NULL OR UPPER(b.title) LIKE UPPER(CONCAT('%', :name, '%')))
-      ORDER BY b.title ASC
-      """)
+  @Query(
+      value = """
+          SELECT * FROM tb_book b
+          WHERE (:name IS NULL OR UPPER(b.title) LIKE UPPER(CONCAT('%', :name, '%')))
+          ORDER BY b.title ASC
+          """,
+      nativeQuery = true
+  )
   List<BookEntity> findAllBooksOrByName(@Param("name") String name);
 }

@@ -14,22 +14,29 @@ export default function Books() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const loadBooks = useCallback(async () => {
-    const [booksResponse, authorsResponse, subjectsResponse] = await Promise.all([
-      axios.get(API, { params: { name: searchTerm } }),
-      axios.get(AUTHORS_API),
-      axios.get(SUBJECTS_API)
-    ]);
+    try {
+      const [booksResponse, authorsResponse, subjectsResponse] = await Promise.all([
+        axios.get(API, { params: { name: searchTerm } }),
+        axios.get(AUTHORS_API, { params: { name: '' } }),
+        axios.get(SUBJECTS_API, { params: { name: '' } })
+      ]);
 
-    const authorsMap = new Map(authorsResponse.data.data.map(a => [a.id, a.name]));
-    const subjectsMap = new Map(subjectsResponse.data.data.map(s => [s.id, s.description]));
+      const authorsMap = new Map(authorsResponse.data.data.map(a => [a.id, a.name]));
+      const subjectsMap = new Map(subjectsResponse.data.data.map(s => [s.id, s.description]));
 
-    const enrichedBooks = booksResponse.data.data.map(book => ({
-      ...book,
-      authors: book.authors.map(authorId => ({ id: authorId, name: authorsMap.get(authorId) || "Autor desconhecido" })),
-      subjects: book.subjects.map(subjectId => ({ id: subjectId, name: subjectsMap.get(subjectId) || "Assunto desconhecido" }))
-    }));
+      const enrichedBooks = booksResponse.data.data.map(book => ({
+        ...book,
+        authors: book.authors.map(authorId => ({ id: authorId, name: authorsMap.get(authorId) || "Autor desconhecido" })),
+        subjects: book.subjects.map(subjectId => ({
+          id: subjectId,
+          description: subjectsMap.get(subjectId) || "Assunto desconhecido"
+        }))
+      }));
 
-    setBooks(enrichedBooks);
+      setBooks(enrichedBooks);
+    } catch (error) {
+      console.error("Erro ao carregar dados:", error);
+    }
   }, [searchTerm]);
 
   useEffect(() => {
@@ -52,9 +59,11 @@ export default function Books() {
     const payload = {
       ...bookData,
       bookCode: parseInt(bookData.bookCode),
-      authors: bookData.authors.map(a => a.id),
-      subjects: bookData.subjects.map(s => s.id),
+      authorsIds: bookData.authors.map(a => a.id),
+      subjectsIds: bookData.subjects.map(s => s.id),
     };
+    delete payload.authors;
+    delete payload.subjects;
 
     if (editingBook) {
       await axios.put(`${API}/${editingBook.id}`, payload);

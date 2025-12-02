@@ -23,6 +23,8 @@ paths:
         - Books
       summary: "List of Books"
       operationId: getAllBooks
+      parameters:
+        - $ref: '#/components/parameters/NameQuery'
       responses:
         '200':
           description: "Book List"

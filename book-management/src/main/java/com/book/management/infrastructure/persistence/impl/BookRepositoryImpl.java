@@ -54,8 +54,8 @@ public class BookRepositoryImpl implements BookRepository {
 
   @Override
   @Transactional(readOnly = true)
-  public List<Book> findAll() {
-    return bookJpaRepository.findAll().stream()
+  public List<Book> findAll(String name) {
+    return bookJpaRepository.findAllBooksOrByName(name).stream()
         .map(this::toModel)
         .toList();
   }

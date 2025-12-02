@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 
 const API = "http://localhost:8080/api/v1/authors";
@@ -8,11 +8,14 @@ export default function Autores() {
   const [authors, setAuthors] = useState([]);
   const [name, setName] = useState("");
   const [editId, setEditId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  async function listar() {
-    const response = await axios.get(API);
+  const listar = useCallback(async () => {
+    const response = await axios.get(API, {
+      params: { name: searchTerm }
+    });
     setAuthors(response.data.data);
-  }
+  }, [searchTerm]);
 
   async function salvar(e) {
     e.preventDefault();
@@ -39,10 +42,9 @@ export default function Autores() {
     listar();
   }
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     listar();
-  }, []);
+  }, [listar]);
 
   return (
     <div className="container mt-4">
@@ -68,6 +70,17 @@ export default function Autores() {
           </button>
         )}
       </form>
+
+      <div className="mb-4">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Pesquisar por nome"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
       <table className="table table-striped">
         <thead>
           <tr>

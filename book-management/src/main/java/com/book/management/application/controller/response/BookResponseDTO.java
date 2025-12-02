@@ -8,7 +8,7 @@ public record BookResponseDTO(
     String title,
     String publisher,
     String edition,
-    String publishedDate,
+    String yearPublication,
     String price,
     List<Long> authors,
     List<Long> subjects

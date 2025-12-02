@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import BookList from "../components/books/BookList";
 import BookModal from "../components/books/BookModal";
@@ -9,15 +9,18 @@ export default function Books() {
   const [books, setBooks] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [editingBook, setEditingBook] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const loadBooks = useCallback(async () => {
+    const response = await axios.get(API, {
+      params: { name: searchTerm }
+    });
+    setBooks(response.data.data);
+  }, [searchTerm]);
 
   useEffect(() => {
     loadBooks();
-  }, []);
-
-  async function loadBooks() {
-    const response = await axios.get(API);
-    setBooks(response.data.data);
-  }
+  }, [loadBooks]);
 
   function handleEdit(book) {
     setEditingBook(book);
@@ -54,6 +57,16 @@ export default function Books() {
       <button className="btn btn-primary mb-3" onClick={() => { setEditingBook(null); setShowModal(true); }}>
         Cadastrar Livro
       </button>
+
+      <div className="mb-4">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Pesquisar por nome"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
 
       <BookList books={books} onEdit={handleEdit} onDelete={handleDelete} />
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 public record FindAllBookUseCase(BookRepository bookRepository) {
 
-  public List<Book> find() {
-    return bookRepository.findAll();
+  public List<Book> find(String name) {
+    return bookRepository.findAll(name);
   }
 }

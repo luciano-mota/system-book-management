@@ -43,8 +43,8 @@ public class BookController implements BooksApi {
   }
 
   @Override
-  public ResponseEntity<GenericRestReturnDTO> getAllBooks(HttpServletRequest httpServletRequest) {
-    var books = findAllBookUseCase.find().stream()
+  public ResponseEntity<GenericRestReturnDTO> getAllBooks(HttpServletRequest httpServletRequest, String name) {
+    var books = findAllBookUseCase.find(name).stream()
         .map(bookMapper::toResponse)
         .toList();
 

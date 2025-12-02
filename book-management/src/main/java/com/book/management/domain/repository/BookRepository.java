@@ -9,7 +9,7 @@ public interface BookRepository {
 
   Book findById(Long id);
 
-  List<Book> findAll();
+  List<Book> findAll(String name);
 
   void deleteById(Long id);
 

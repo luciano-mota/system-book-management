@@ -6,38 +6,34 @@ import com.book.management.domain.usecase.FindAllAuthorUseCase;
 import com.book.management.domain.usecase.FindAuthorByIdUseCase;
 import com.book.management.domain.usecase.InsertAuthorUseCase;
 import com.book.management.domain.usecase.UpdateAuthorUseCase;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@RequiredArgsConstructor
 public class AuthorUseCasesConfig {
 
-  private final AuthorRepository authorRepository;
-
   @Bean
-  public InsertAuthorUseCase insertAuthorUseCase() {
+  public InsertAuthorUseCase insertAuthorUseCase(AuthorRepository authorRepository) {
     return new InsertAuthorUseCase(authorRepository);
   }
 
   @Bean
-  public FindAuthorByIdUseCase findAuthorByIdUseCase() {
+  public FindAuthorByIdUseCase findAuthorByIdUseCase(AuthorRepository authorRepository) {
     return new FindAuthorByIdUseCase(authorRepository);
   }
 
   @Bean
-  public FindAllAuthorUseCase findAllAuthorUseCase() {
+  public FindAllAuthorUseCase findAllAuthorUseCase(AuthorRepository authorRepository) {
     return new FindAllAuthorUseCase(authorRepository);
   }
 
   @Bean
-  public UpdateAuthorUseCase updateAuthorUseCase() {
+  public UpdateAuthorUseCase updateAuthorUseCase(AuthorRepository authorRepository) {
     return new UpdateAuthorUseCase(authorRepository);
   }
 
   @Bean
-  public DeleteAuthorUseCase deleteAuthorUseCase() {
+  public DeleteAuthorUseCase deleteAuthorUseCase(AuthorRepository authorRepository) {
     return new DeleteAuthorUseCase(authorRepository);
   }
 }

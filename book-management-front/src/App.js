@@ -5,7 +5,6 @@ import Home from "./pages/Home";
 import Books from "./pages/Books";
 import Authors from "./pages/Authors";
 import Subjects from "./pages/Subjects";
-import Report from "./pages/Report";
 
 function App() {
   return (
@@ -18,7 +17,6 @@ function App() {
           <Route path="/books" element={<Books />} />
           <Route path="/authors" element={<Authors />} />
           <Route path="/subjects" element={<Subjects />} />
-          <Route path="/report" element={<Report />} />
         </Routes>
       </div>
     </BrowserRouter>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react'; // Importe useState para gerenciar o estado de erro
 
 export default function BookForm({
   bookData,
@@ -7,10 +7,34 @@ export default function BookForm({
   onRemoveAuthor,
   onRemoveSubject
 }) {
+  const [yearPublicationError, setYearPublicationError] = useState(''); // Novo estado para a mensagem de erro
 
   function handleSubmit(e) {
     e.preventDefault();
+    // Verifica se há erros antes de salvar
+    if (yearPublicationError) {
+      alert("Por favor, corrija os erros de validação antes de salvar.");
+      return;
+    }
     onSave();
+  }
+
+  // Função de onChange customizada para o campo yearPublication
+  function handleYearPublicationChange(e) {
+    const { name, value } = e.target;
+
+    // Remove caracteres não numéricos
+    const numericValue = value.replace(/\D/g, '');
+
+    // Validação: deve ter exatamente 4 dígitos
+    if (numericValue.length > 0 && numericValue.length !== 4) {
+      setYearPublicationError('O ano de publicação deve ter exatamente 4 dígitos.');
+    } else {
+      setYearPublicationError(''); // Limpa o erro se a validação passar
+    }
+
+    // Chama o onChange original do componente pai com o valor limpo
+    onChange({ target: { name, value: numericValue } });
   }
 
   return (
@@ -41,7 +65,19 @@ export default function BookForm({
       <div className="row">
         <div className="col-md-6 mb-2">
           <label>Ano de Publicação</label>
-          <input type="number" name="yearPublication" value={bookData.yearPublication} onChange={onChange} className="form-control" />
+          <input
+            type="text" // Alterado para text para permitir controle total da entrada
+            name="yearPublication"
+            value={bookData.yearPublication}
+            onChange={handleYearPublicationChange} // Usando o novo handler
+            className={`form-control ${yearPublicationError ? 'is-invalid' : ''}`} // Adiciona classe de erro
+            maxLength="4" // Limita a entrada a 4 caracteres no HTML
+          />
+          {yearPublicationError && (
+            <div className="invalid-feedback">
+              {yearPublicationError}
+            </div>
+          )}
         </div>
         <div className="col-md-6 mb-2">
           <label>Preço</label>

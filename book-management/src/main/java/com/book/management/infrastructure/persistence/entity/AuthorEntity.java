@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
-@Table(name = "tb_authors")
+@Table(name = "tb_author")
 public class AuthorEntity {
 
   @Id

@@ -77,7 +77,7 @@ class SubjectRepositoryJpaImplTest {
 
   @Test
   void shouldFindAllSubjectWithSuccess() {
-    when(repository.findAllSubjectEntityOrByDescription(any())).thenReturn(List.of(new SubjectEntity(1L, "Teste")));
+    when(repository.findAllSubjectOrByDescription(any())).thenReturn(List.of(new SubjectEntity(1L, "Teste")));
 
     var authors = subjectRepositoryImpl.findAll("Teste");
 
@@ -86,7 +86,7 @@ class SubjectRepositoryJpaImplTest {
         () -> assertEquals(1, authors.size()),
         () -> assertEquals(1L, authors.get(0).getId()),
         () -> assertEquals("Teste", authors.get(0).getDescription()),
-        () -> verify(repository).findAllSubjectEntityOrByDescription(any())
+        () -> verify(repository).findAllSubjectOrByDescription(any())
     );
   }
 

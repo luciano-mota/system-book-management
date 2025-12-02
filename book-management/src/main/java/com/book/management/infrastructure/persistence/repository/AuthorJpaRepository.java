@@ -8,10 +8,13 @@ import org.springframework.data.repository.query.Param;
 
 public interface AuthorJpaRepository extends JpaRepository<AuthorEntity, Long> {
 
-  @Query("""
-      SELECT a FROM AuthorEntity a
-      WHERE (:name IS NULL OR UPPER(a.name) LIKE UPPER(CONCAT('%', :name, '%')))
-      ORDER BY a.name ASC
-      """)
+  @Query(
+      value = """
+          SELECT * FROM tb_author a
+          WHERE (:name IS NULL OR UPPER(a.name) LIKE UPPER(CONCAT('%', :name, '%')))
+          ORDER BY a.name ASC
+          """,
+      nativeQuery = true
+  )
   List<AuthorEntity> findAllAuthorOrByName(@Param("name") String name);
 }

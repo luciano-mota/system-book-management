@@ -25,7 +25,7 @@ public class SubjectEntity {
   @GeneratedValue(strategy = IDENTITY)
   private Long id;
 
-  @Column(nullable = false, length = 20)
+  @Column(name = "description", nullable = false, length = 20)
   private String description;
 
   public SubjectEntity(String description) {

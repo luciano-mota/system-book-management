@@ -15,7 +15,7 @@ export default function SubjectForm({ onSubjectSelected }) {
       return;
     }
     try {
-      // Usa 'name' para a busca (query param)
+      // ALTERAÇÃO AQUI: Mudando 'description' para 'subject' no query param
       const response = await axios.get(API_SUBJECTS, { params: { subject: searchTerm } });
       setSearchResults(response.data.data);
     } catch (error) {
@@ -28,7 +28,6 @@ export default function SubjectForm({ onSubjectSelected }) {
   }, [debouncedSearchTerm, searchSubjects]);
 
   function handleSelectSubject(subject) {
-    // Internamente, o objeto de assunto usa 'description'
     setDescription(subject.description);
     setSearchResults([]);
     onSubjectSelected(subject);
@@ -45,7 +44,6 @@ export default function SubjectForm({ onSubjectSelected }) {
     }
 
     try {
-      // Usa 'description' para criar um novo assunto (corpo do POST)
       const response = await axios.post(API_SUBJECTS, { description: description });
       onSubjectSelected(response.data.data);
       setDescription('');
@@ -70,7 +68,7 @@ export default function SubjectForm({ onSubjectSelected }) {
           required
         />
         {searchResults.length > 0 && (
-          <ul className="list-group position-absolute w-100" style={{ zIndex: 1000 }}>
+          <ul className="list-group position-absolute w-100" style={{ zIndex: 1000, maxHeight: '200px', overflowY: 'auto', top: '100%' }}>
             {searchResults.map(subject => (
               <li
                 key={subject.id}

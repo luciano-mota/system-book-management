@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 
 const API = "http://localhost:8080/api/v1/subjects";
 
 export default function Assuntos() {
+
   const [assuntos, setAssuntos] = useState([]);
   const [description, setDescription] = useState("");
   const [editId, setEditId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de busca
 
-  async function listar() {
-    const response = await axios.get(API);
+  const listar = useCallback(async () => {
+    const response = await axios.get(API, {
+      params: { description: searchTerm } // Usa searchTerm como query param
+    });
     setAssuntos(response.data.data);
-  }
+  }, [searchTerm]); // Dependência para searchTerm
 
   async function salvar(e) {
     e.preventDefault();
@@ -23,7 +27,7 @@ export default function Assuntos() {
     }
     setDescription("");
     setEditId(null);
-    listar();
+    listar(); // Recarrega a lista após salvar
   }
 
   async function editar(assunto) {
@@ -34,17 +38,18 @@ export default function Assuntos() {
   async function deletar(id) {
     if (!window.confirm("Confirmar excluir?")) return;
     await axios.delete(`${API}/${id}`);
-    listar();
+    listar(); // Recarrega a lista após deletar
   }
 
   useEffect(() => {
     listar();
-  }, []);
+  }, [listar]); // Adicionado 'listar' como dependência para garantir que seja chamado quando 'searchTerm' muda
 
   return (
     <div className="container mt-4">
       <h2>Gerenciar Assuntos</h2>
 
+      {/* Formulário de Cadastro/Edição */}
       <form className="mt-3 mb-4" onSubmit={salvar}>
           <input
               type="text"
@@ -65,6 +70,17 @@ export default function Assuntos() {
             </button>
           )}
         </form>
+
+      {/* Campo de Pesquisa */}
+      <div className="mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Pesquisar assuntos por descrição..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)} // Atualiza o searchTerm
+        />
+      </div>
 
       <table className="table table-striped">
         <thead>

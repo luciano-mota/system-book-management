@@ -37,7 +37,7 @@ public class SubjectRepositoryImpl implements SubjectRepository {
   @Override
   @Transactional(readOnly = true)
   public List<Subject> findAll(String subject) {
-    return subjectJpaRepository.findAllSubjectEntityOrByDescription(subject).stream()
+    return subjectJpaRepository.findAllSubjectOrByDescription(subject).stream()
         .map(subjectEntity -> new Subject(subjectEntity.getId(), subjectEntity.getDescription()))
         .toList();
   }
@@ -47,7 +47,7 @@ public class SubjectRepositoryImpl implements SubjectRepository {
   public Subject update(Subject subject) {
     var subjectEntity = subjectJpaRepository.findById(subject.getId())
         .orElseThrow(() -> new IsNotFoundException("Subject not found with id: " + subject.getId()));
-    subjectEntity.setDescription(subjectEntity.getDescription());
+    subjectEntity.setDescription(subject.getDescription());
     subjectEntity = subjectJpaRepository.save(subjectEntity);
     return new Subject(subjectEntity.getId(), subjectEntity.getDescription());
   }

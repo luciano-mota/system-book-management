@@ -9,7 +9,7 @@ public interface AuthorRepository {
 
   Author findById(Long id);
 
-  List<Author> findAll();
+  List<Author> findAll(String name);
 
   Author update(Author author);
 

@@ -44,8 +44,8 @@ public class AuthorController implements AuthorsApi {
   }
 
   @Override
-  public ResponseEntity<GenericRestReturnDTO> getAllAuthors(HttpServletRequest httpServletRequest) {
-    var authors = findAllAuthorUseCase.find().stream()
+  public ResponseEntity<GenericRestReturnDTO> getAllAuthors(HttpServletRequest httpServletRequest, String name) {
+    var authors = findAllAuthorUseCase.find(name).stream()
         .map(authorMapper::toResponse)
         .toList();
 

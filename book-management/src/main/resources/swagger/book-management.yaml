@@ -129,6 +129,8 @@ paths:
         - Authors
       summary: "List of Authors"
       operationId: getAllAuthors
+      parameters:
+        - $ref: '#/components/parameters/NameQuery'
       responses:
         '200':
           description: "Author List"
@@ -280,6 +282,14 @@ components:
       schema:
         type: integer
         format: int64
+    NameQuery:
+      name: "name"
+      in: "query"
+      description: "Name"
+      required: false
+      schema:
+        type: string
+
   schemas:
     BookRequestDTO:
       type: object

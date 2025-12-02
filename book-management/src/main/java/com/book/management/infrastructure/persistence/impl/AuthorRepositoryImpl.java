@@ -36,8 +36,8 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
   @Override
   @Transactional(readOnly = true)
-  public List<Author> findAll() {
-    return authorJpaRepository.findAll().stream()
+  public List<Author> findAll(String name) {
+    return authorJpaRepository.findAllAuthorOrByName(name).stream()
         .map(authorEntity -> new Author(authorEntity.getId(), authorEntity.getName()))
         .toList();
   }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public record FindAllAuthorUseCase(AuthorRepository authorRepository) {
 
-  public List<Author> find() {
-    return authorRepository.findAll();
+  public List<Author> find(String name) {
+    return authorRepository.findAll(name);
   }
 }

@@ -1,18 +1,17 @@
 package com.book.management.domain.repository;
 
-import com.book.management.domain.entity.Book;
+import com.book.management.domain.model.Book;
 import java.util.List;
-import java.util.Optional;
 
 public interface BookRepository {
 
   Book save(Book book);
 
-  Optional<Book> findById(Long id);
+  Book findById(Long id);
 
-  List<Book> findAll();
+  List<Book> findAll(String name);
 
   void deleteById(Long id);
 
-  boolean existsById(Long id);
+  Book update(Book book);
 }

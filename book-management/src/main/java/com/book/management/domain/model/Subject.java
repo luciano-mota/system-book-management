@@ -1,4 +1,4 @@
-package com.book.management.domain.entity;
+package com.book.management.domain.model;
 
 public class Subject {
 

@@ -1,16 +1,17 @@
 package com.book.management.domain.repository;
 
-import com.book.management.domain.entity.Subject;
+import com.book.management.domain.model.Subject;
 import java.util.List;
-import java.util.Optional;
 
 public interface SubjectRepository {
 
   Subject save(Subject subject);
 
-  Optional<Subject> findById(Long id);
+  Subject findById(Long id);
 
-  List<Subject> findAll();
+  List<Subject> findAll(String subject);
 
   void deleteById(Long id);
+
+  Subject update(Subject subject);
 }

@@ -36,8 +36,8 @@ public class SubjectRepositoryImpl implements SubjectRepository {
 
   @Override
   @Transactional(readOnly = true)
-  public List<Subject> findAll() {
-    return subjectJpaRepository.findAll().stream()
+  public List<Subject> findAll(String subject) {
+    return subjectJpaRepository.findAllSubjectEntityOrByDescription(subject).stream()
         .map(subjectEntity -> new Subject(subjectEntity.getId(), subjectEntity.getDescription()))
         .toList();
   }

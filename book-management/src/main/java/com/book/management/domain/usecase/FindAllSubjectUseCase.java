@@ -6,7 +6,7 @@ import java.util.List;
 
 public record FindAllSubjectUseCase(SubjectRepository subjectRepository) {
 
-  public List<Subject> findAll() {
-    return subjectRepository.findAll();
+  public List<Subject> findAll(String subject) {
+    return subjectRepository.findAll(subject);
   }
 }

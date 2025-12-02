@@ -1,4 +1,4 @@
-package com.book.management.application.controller;
+package com.book.management.application.controller.response;
 
 import lombok.Data;
 

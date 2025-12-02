@@ -5,6 +5,7 @@ import static java.util.Objects.nonNull;
 
 import com.book.management.domain.model.Book;
 import com.book.management.domain.repository.BookRepository;
+import com.book.management.infrastructure.exception.IsDataBaseException;
 import com.book.management.infrastructure.exception.IsNotFoundException;
 import com.book.management.infrastructure.persistence.entity.AuthorEntity;
 import com.book.management.infrastructure.persistence.entity.BookEntity;
@@ -55,19 +56,30 @@ public class BookRepositoryImpl implements BookRepository {
   }
 
   @Override
+  @Transactional
   public void deleteById(Long id) {
     try {
       bookJpaRepository.deleteById(id);
     } catch (EmptyResultDataAccessException e) {
       throw new IsNotFoundException("Book not found with id: " + id);
     } catch (DataIntegrityViolationException e) {
-      throw new IllegalStateException("Integrity violation");
+      throw new IsDataBaseException("Integrity violation");
     }
+  }
+
+  @Override
+  @Transactional
+  public Book update(Book book) {
+    var bookEntity = bookJpaRepository.findById(book.getId())
+        .orElseThrow(() -> new IsNotFoundException("Book not found with id: " + book.getId()));
+    bookEntity = toEntity(book);
+    bookJpaRepository.save(bookEntity);
+    return toModel(bookEntity);
   }
 
   private BookEntity toEntity(Book book) {
     var bookEntity = BookEntity.builder()
-        .id(book.getId())
+        .id(isNull(book.getId()) ? null : book.getId())
         .bookCode(book.getBookCode())
         .title(book.getTitle())
         .publisher(book.getPublisher())
@@ -93,15 +105,19 @@ public class BookRepositoryImpl implements BookRepository {
   }
 
   public Book toModel(BookEntity bookEntity) {
-    var authorsIds = isNull(bookEntity.getAuthors()) ? null :
-        bookEntity.getAuthors().stream()
-            .map(AuthorEntity::getId)
-            .toList();
+    List<Long> authorsIds = null;
+    if (nonNull(bookEntity.getAuthors())) {
+      authorsIds = bookEntity.getAuthors().stream()
+          .map(AuthorEntity::getId)
+          .toList();
+    }
 
-    var subjectsIds = isNull(bookEntity.getSubjects()) ? null :
-        bookEntity.getSubjects().stream()
-            .map(SubjectEntity::getId)
-            .toList();
+    List<Long> subjectsIds = null;
+    if (nonNull(bookEntity.getSubjects())) {
+      subjectsIds = bookEntity.getSubjects().stream()
+          .map(SubjectEntity::getId)
+          .toList();
+    }
 
     return new Book(
         bookEntity.getId(),

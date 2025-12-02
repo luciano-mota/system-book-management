@@ -2,6 +2,7 @@ package com.book.management.application.controller;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
+import com.book.management.application.controller.response.GenericRestReturnDTO;
 import com.book.management.application.mapper.SubjectMapper;
 import com.book.management.domain.usecase.DeleteSubjectUseCase;
 import com.book.management.domain.usecase.FindAllSubjectUseCase;
@@ -41,9 +42,8 @@ public class SubjectController implements SubjectsApi {
   }
 
   @Override
-  public ResponseEntity<GenericRestReturnDTO> getAllSubjects(
-      HttpServletRequest httpServletRequest) {
-    var subjects = findAllSubjectUseCase.findAll().stream()
+  public ResponseEntity<GenericRestReturnDTO> getAllSubjects(HttpServletRequest httpServletRequest, String subject) {
+    var subjects = findAllSubjectUseCase.findAll(subject).stream()
         .map(subjectMapper::toResponse)
         .toList();
     return ResponseEntity.ok(new GenericRestReturnDTO(subjects));

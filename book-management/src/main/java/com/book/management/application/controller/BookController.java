@@ -2,6 +2,7 @@ package com.book.management.application.controller;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
+import com.book.management.application.controller.response.GenericRestReturnDTO;
 import com.book.management.application.mapper.BookMapper;
 import com.book.management.domain.usecase.DeleteBookUseCase;
 import com.book.management.domain.usecase.FindAllBookUseCase;

@@ -12,7 +12,7 @@ export default function Assuntos() {
 
   const listar = useCallback(async () => {
     const response = await axios.get(API, {
-      params: { description: searchTerm } // Usa searchTerm como query param
+      params: { subject: searchTerm } // Usa searchTerm como query param
     });
     setAssuntos(response.data.data);
   }, [searchTerm]); // Dependência para searchTerm

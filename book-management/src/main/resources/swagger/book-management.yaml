@@ -217,6 +217,8 @@ paths:
         - Subjects
       summary: "List of Subjects"
       operationId: getAllSubjects
+      parameters:
+        - $ref: '#/components/parameters/SubjectQuery'
       responses:
         '200':
           description: "Subject List"
@@ -288,6 +290,13 @@ components:
       name: "name"
       in: "query"
       description: "Name"
+      required: false
+      schema:
+        type: string
+    SubjectQuery:
+      name: "subject"
+      in: "query"
+      description: "Subject"
       required: false
       schema:
         type: string

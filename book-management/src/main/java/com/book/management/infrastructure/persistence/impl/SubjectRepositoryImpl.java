@@ -47,7 +47,7 @@ public class SubjectRepositoryImpl implements SubjectRepository {
   public Subject update(Subject subject) {
     var subjectEntity = subjectJpaRepository.findById(subject.getId())
         .orElseThrow(() -> new IsNotFoundException("Subject not found with id: " + subject.getId()));
-    subjectEntity.setDescription(subjectEntity.getDescription());
+    subjectEntity.setDescription(subject.getDescription());
     subjectEntity = subjectJpaRepository.save(subjectEntity);
     return new Subject(subjectEntity.getId(), subjectEntity.getDescription());
   }

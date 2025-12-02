@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 public class SubjectEntity {
 
   @Id
+  @Column(name = "subject_code")
   @GeneratedValue(strategy = IDENTITY)
   private Long id;
 

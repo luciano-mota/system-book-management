@@ -51,14 +51,14 @@ public class BookEntity {
   @ManyToMany
   @JoinTable(
       name = "tb_book_author",
-      joinColumns = @JoinColumn(name = "book_code"),
+      joinColumns = @JoinColumn(name = "book_code", referencedColumnName = "bookCode"),
       inverseJoinColumns = @JoinColumn(name = "author_code"))
   private Set<AuthorEntity> authors;
 
   @ManyToMany
   @JoinTable(
       name = "tb_book_subject",
-      joinColumns = @JoinColumn(name = "book_code"),
+      joinColumns = @JoinColumn(name = "book_code", referencedColumnName = "bookCode"),
       inverseJoinColumns = @JoinColumn(name = "subject_code"))
   private Set<SubjectEntity> subjects;
 }

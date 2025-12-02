@@ -1,6 +1,5 @@
 package com.book.management.infrastructure.persistence.impl;
 
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import com.book.management.domain.model.Book;
@@ -34,9 +33,15 @@ public class BookRepositoryImpl implements BookRepository {
   @Override
   @Transactional
   public Book save(Book book) {
-    var bookEntity = toEntity(book);
-    var savedEntity = bookJpaRepository.save(bookEntity);
-    return toModel(savedEntity);
+    var bookEntity = new BookEntity();
+    mapBookToEntity(book, bookEntity);
+
+    var savedBookEntity = bookJpaRepository.save(bookEntity);
+
+    associateAuthorsAndSubjects(book, savedBookEntity);
+
+    savedBookEntity = bookJpaRepository.save(savedBookEntity);
+    return toModel(savedBookEntity);
   }
 
   @Override
@@ -57,6 +62,19 @@ public class BookRepositoryImpl implements BookRepository {
 
   @Override
   @Transactional
+  public Book update(Book book) {
+    var bookEntity = bookJpaRepository.findById(book.getId())
+        .orElseThrow(() -> new IsNotFoundException("Book not found with id: " + book.getId()));
+
+    mapBookToEntity(book, bookEntity);
+    associateAuthorsAndSubjects(book, bookEntity);
+
+    bookJpaRepository.save(bookEntity);
+    return toModel(bookEntity);
+  }
+
+  @Override
+  @Transactional
   public void deleteById(Long id) {
     try {
       bookJpaRepository.deleteById(id);
@@ -67,32 +85,23 @@ public class BookRepositoryImpl implements BookRepository {
     }
   }
 
-  @Override
-  @Transactional
-  public Book update(Book book) {
-    var bookEntity = bookJpaRepository.findById(book.getId())
-        .orElseThrow(() -> new IsNotFoundException("Book not found with id: " + book.getId()));
-    bookEntity = toEntity(book);
-    bookJpaRepository.save(bookEntity);
-    return toModel(bookEntity);
+  private void mapBookToEntity(Book book, BookEntity bookEntity) {
+    bookEntity.setBookCode(book.getBookCode());
+    bookEntity.setTitle(book.getTitle());
+    bookEntity.setPublisher(book.getPublisher());
+    bookEntity.setEdition(book.getEdition());
+    bookEntity.setPublicationDate(book.getYearPublication());
+    bookEntity.setPrice(book.getPrice());
   }
 
-  private BookEntity toEntity(Book book) {
-    var bookEntity = BookEntity.builder()
-        .id(isNull(book.getId()) ? null : book.getId())
-        .bookCode(book.getBookCode())
-        .title(book.getTitle())
-        .publisher(book.getPublisher())
-        .edition(book.getEdition())
-        .publicationDate(book.getYearPublication())
-        .price(book.getPrice())
-        .build();
-
+  private void associateAuthorsAndSubjects(Book book, BookEntity bookEntity) {
     if (nonNull(book.getAuthorsIds())){
       Set<AuthorEntity> authors = book.getAuthorsIds().stream()
           .map(authorJpaRepository::getReferenceById)
           .collect(Collectors.toSet());
       bookEntity.setAuthors(authors);
+    } else {
+      bookEntity.getAuthors().clear();
     }
 
     if (nonNull(book.getSubjectsIds())) {
@@ -100,11 +109,12 @@ public class BookRepositoryImpl implements BookRepository {
           .map(subjectJpaRepository::getReferenceById)
           .collect(Collectors.toSet());
       bookEntity.setSubjects(subjects);
+    } else {
+      bookEntity.getSubjects().clear();
     }
-    return bookEntity;
   }
 
-  public Book toModel(BookEntity bookEntity) {
+  private Book toModel(BookEntity bookEntity) {
     List<Long> authorsIds = null;
     if (nonNull(bookEntity.getAuthors())) {
       authorsIds = bookEntity.getAuthors().stream()

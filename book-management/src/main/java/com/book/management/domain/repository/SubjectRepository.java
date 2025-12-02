@@ -12,4 +12,6 @@ public interface SubjectRepository {
   List<Subject> findAll();
 
   void deleteById(Long id);
+
+  Subject update(Subject subject);
 }

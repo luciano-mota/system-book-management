@@ -43,7 +43,7 @@ paths:
               $ref: '#/components/schemas/BookRequestDTO'
       responses:
         '201':
-          description: "Livro criado"
+          description: "Book created"
           content:
             application/json:
               schema:
@@ -284,16 +284,22 @@ components:
     BookRequestDTO:
       type: object
       properties:
+        bookCode:
+          type: integer
+          format: int64
         title:
           type: string
-        author:
+        publisher:
           type: string
-        publishedDate:
+        edition:
           type: string
-          format: date
-        value:
+        yearPublication:
+          type: string
+          example: 1999
+        price:
           type: string
           format: decimal
+          example: 100.00
         authorsIds:
           type: array
           items:
@@ -302,7 +308,15 @@ components:
           type: array
           items:
             type: integer
-      required: ["title", "author"]
+      required:
+        - bookCode
+        - title
+        - publisher
+        - edition
+        - yearPublication
+        - price
+        - authorsIds
+        - subjectsIds
     AuthorRequestDTO:
       type: object
       properties:

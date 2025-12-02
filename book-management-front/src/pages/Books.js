@@ -4,6 +4,8 @@ import BookList from "../components/books/BookList";
 import BookModal from "../components/books/BookModal";
 
 const API = "http://localhost:8080/api/v1/books";
+const AUTHORS_API = "http://localhost:8080/api/v1/authors";
+const SUBJECTS_API = "http://localhost:8080/api/v1/subjects";
 
 export default function Books() {
   const [books, setBooks] = useState([]);
@@ -12,10 +14,22 @@ export default function Books() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const loadBooks = useCallback(async () => {
-    const response = await axios.get(API, {
-      params: { name: searchTerm }
-    });
-    setBooks(response.data.data);
+    const [booksResponse, authorsResponse, subjectsResponse] = await Promise.all([
+      axios.get(API, { params: { name: searchTerm } }),
+      axios.get(AUTHORS_API),
+      axios.get(SUBJECTS_API)
+    ]);
+
+    const authorsMap = new Map(authorsResponse.data.data.map(a => [a.id, a.name]));
+    const subjectsMap = new Map(subjectsResponse.data.data.map(s => [s.id, s.description]));
+
+    const enrichedBooks = booksResponse.data.data.map(book => ({
+      ...book,
+      authors: book.authors.map(authorId => ({ id: authorId, name: authorsMap.get(authorId) || "Autor desconhecido" })),
+      subjects: book.subjects.map(subjectId => ({ id: subjectId, name: subjectsMap.get(subjectId) || "Assunto desconhecido" }))
+    }));
+
+    setBooks(enrichedBooks);
   }, [searchTerm]);
 
   useEffect(() => {
@@ -38,6 +52,8 @@ export default function Books() {
     const payload = {
       ...bookData,
       bookCode: parseInt(bookData.bookCode),
+      authors: bookData.authors.map(a => a.id),
+      subjects: bookData.subjects.map(s => s.id),
     };
 
     if (editingBook) {

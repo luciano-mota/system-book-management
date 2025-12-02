@@ -25,8 +25,8 @@ export default function BookList({ books, onEdit, onDelete }) {
             <td>{b.publisher}</td>
             <td>{b.yearPublication}</td>
             <td>{b.price}</td>
-            <td>{b.authors.join(", ")}</td>
-            <td>{b.subjects.join(", ")}</td>
+            <td>{b.authors.map(a => a.name).join(", ")}</td>
+            <td>{b.subjects.map(s => s.description).join(", ")}</td>
             <td>
               <button className="btn btn-warning btn-sm me-2" onClick={() => onEdit(b)}>Editar</button>
               <button className="btn btn-danger btn-sm" onClick={() => onDelete(b.id)}>Excluir</button>

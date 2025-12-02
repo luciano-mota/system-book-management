@@ -15,7 +15,8 @@ export default function SubjectForm({ onSubjectSelected }) {
       return;
     }
     try {
-      const response = await axios.get(API_SUBJECTS, { params: { description: searchTerm } });
+      // ALTERAÇÃO AQUI: Mudando 'description' para 'subject' no query param
+      const response = await axios.get(API_SUBJECTS, { params: { subject: searchTerm } });
       setSearchResults(response.data.data);
     } catch (error) {
       console.error("Erro ao buscar assuntos:", error);
@@ -67,7 +68,7 @@ export default function SubjectForm({ onSubjectSelected }) {
           required
         />
         {searchResults.length > 0 && (
-          <ul className="list-group position-absolute w-100" style={{ zIndex: 1000, maxHeight: '200px', overflowY: 'auto' }}>
+          <ul className="list-group position-absolute w-100" style={{ zIndex: 1000, maxHeight: '200px', overflowY: 'auto', top: '100%' }}>
             {searchResults.map(subject => (
               <li
                 key={subject.id}

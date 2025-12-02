@@ -111,7 +111,7 @@ export default function AuthorForm({ onAuthorSelected }) {
         />
         {/* A lista de resultados só é exibida se houver resultados. */}
         {searchResults.length > 0 && (
-          <ul className="list-group position-absolute w-100" style={{ zIndex: 1000, maxHeight: '200px', overflowY: 'auto' }}>
+          <ul className="list-group position-absolute w-100" style={{ zIndex: 1000, maxHeight: '200px', overflowY: 'auto', top: '100%' }}>
             {searchResults.map(author => (
               <li
                 key={author.id}

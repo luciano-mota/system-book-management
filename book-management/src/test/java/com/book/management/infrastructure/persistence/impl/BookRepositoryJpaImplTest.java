@@ -141,7 +141,7 @@ class BookRepositoryJpaImplTest {
   }
 
   @Test
-  void shouldReturnExceptionWhenNotFoundSubjectToDelete() {
+  void shouldReturnExceptionWhenNotFoundBookToDelete() {
     doThrow(new IsNotFoundException("Subject not found")).when(repository).deleteById(any());
 
     var exception = assertThrows(IsNotFoundException.class,
@@ -156,7 +156,7 @@ class BookRepositoryJpaImplTest {
   }
 
   @Test
-  void shouldReturnExceptionWhenIntegrityViolationSubjectToDelete() {
+  void shouldReturnExceptionWhenIntegrityViolationBookToDelete() {
     doThrow(new IsDataBaseException("Integrity violation")).when(repository).deleteById(any());
 
     var exception = assertThrows(IsDataBaseException.class,

@@ -15,6 +15,17 @@ public class Report {
 
   public Report() {}
 
+  public Report(Long bookCode, String bookTitle, String publisher, String edition, String yearPublication, BigDecimal price, String authors, String subjects) {
+    this.bookCode = bookCode;
+    this.bookTitle = bookTitle;
+    this.publisher = publisher;
+    this.edition = edition;
+    this.yearPublication = yearPublication;
+    this.price = price;
+    this.authors = authors;
+    this.subjects = subjects;
+  }
+
   public Long getBookCode() {
     return bookCode;
   }

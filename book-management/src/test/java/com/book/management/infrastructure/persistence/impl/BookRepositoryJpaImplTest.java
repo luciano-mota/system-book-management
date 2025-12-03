@@ -1,6 +1,6 @@
 package com.book.management.infrastructure.persistence.impl;
 
-import static com.book.management.domain.mock.BookEntityMock.buildBookEntityMock;
+import static com.book.management.infrastructure.persistence.mock.BookEntityMock.buildBookEntityMock;
 import static com.book.management.domain.mock.BookMock.buildBookMock;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;

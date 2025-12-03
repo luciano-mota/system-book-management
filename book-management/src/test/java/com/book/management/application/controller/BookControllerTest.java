@@ -1,7 +1,7 @@
 package com.book.management.application.controller;
 
 import static com.book.management.domain.mock.BookMock.buildBookMock;
-import static com.book.management.domain.mock.BookRequestDTOMock.buildBookRequestMock;
+import static com.book.management.application.mock.BookRequestDTOMock.buildBookRequestMock;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;

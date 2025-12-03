@@ -1,4 +1,4 @@
-package com.book.management.domain.mock;
+package com.book.management.application.mock;
 
 import java.math.BigDecimal;
 import java.util.List;

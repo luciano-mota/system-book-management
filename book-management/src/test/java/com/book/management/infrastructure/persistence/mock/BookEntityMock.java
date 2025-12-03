@@ -1,4 +1,4 @@
-package com.book.management.domain.mock;
+package com.book.management.infrastructure.persistence.mock;
 
 import com.book.management.infrastructure.persistence.entity.AuthorEntity;
 import com.book.management.infrastructure.persistence.entity.BookEntity;

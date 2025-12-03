@@ -75,7 +75,7 @@ O `-v` é importante para remover os volumes de dados do banco de dados, garanti
 ### Banco de Dados
 
 -   **Tecnologia**: PostgreSQL
--   **Nome do Banco de Dados**: `book_management_db`
--   **Usuário**: `user`
--   **Senha**: `password`
+-   **Nome do Banco de Dados**: `bookdb`
+-   **Usuário**: `postgres`
+-   **Senha**: `postgres`
 -   **Porta**: 5432

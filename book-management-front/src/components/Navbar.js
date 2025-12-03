@@ -19,6 +19,9 @@ export default function Navbar() {
             <li className="nav-item">
               <NavLink className="nav-link" to="/subjects">Assuntos</NavLink>
             </li>
+            <li className="nav-item"> {/* Novo item de navegação */}
+              <NavLink className="nav-link" to="/reports">Relatórios</NavLink>
+            </li>
           </ul>
         </div>
       </div>

@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Books from "./pages/Books";
 import Authors from "./pages/Authors";
 import Subjects from "./pages/Subjects";
+import BookReport from "./pages/BookReport"; // Importar o novo componente
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/books" element={<Books />} />
           <Route path="/authors" element={<Authors />} />
           <Route path="/subjects" element={<Subjects />} />
+          <Route path="/reports" element={<BookReport />} /> {/* Nova rota para o relatório */}
         </Routes>
       </div>
     </BrowserRouter>

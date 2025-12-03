@@ -16,6 +16,9 @@ tags:
   - name: Subjects
     description: "Operações relacionadas a assuntos"
 
+  - name: Report
+    description: "Relatório de livros"
+
 paths:
   /api/v1/books:
     get:
@@ -276,6 +279,22 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
+  /api/v1/reports:
+    get:
+      tags:
+        - Report
+      summary: "Reports Book"
+      operationId: getBookReport
+      responses:
+        '200':
+          description: "Success reports"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportResponseData'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
 components:
   parameters:
     IdParam:
@@ -351,6 +370,35 @@ components:
           type: string
       required: ["description"]
 
+    ReportResponseData:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportResponseDTO'
+    ReportResponseDTO:
+      type: object
+      properties:
+        bookCode:
+          type: string
+          example: "BK-123456"
+        bookTitle:
+          type: string
+        publisher:
+          type: string
+        edition:
+          type: string
+        yearPublication:
+          type: string
+          example: "2023"
+        price:
+          type: string
+          format: decimal
+        authors:
+          type: string
+        subjects:
+          type: string
     BookResponseData:
       type: object
       properties:

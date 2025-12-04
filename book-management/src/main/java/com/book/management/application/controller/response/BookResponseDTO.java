@@ -4,7 +4,7 @@ import java.util.List;
 
 public record BookResponseDTO(
     Long id,
-    Integer bookCode,
+    Long bookCode,
     String title,
     String publisher,
     String edition,

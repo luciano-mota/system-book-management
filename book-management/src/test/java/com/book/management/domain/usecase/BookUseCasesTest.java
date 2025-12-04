@@ -9,6 +9,8 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.book.management.domain.model.BookPage;
+import com.book.management.domain.model.Pagination;
 import com.book.management.domain.repository.AuthorRepository;
 import com.book.management.domain.repository.BookRepository;
 import com.book.management.domain.repository.SubjectRepository;
@@ -92,22 +94,23 @@ class BookUseCasesTest {
 
   @Test
   void shouldFindAllBookWithSuccess() {
-    when(bookRepository.findAll(any())).thenReturn(List.of(buildBookMock()));
+    when(bookRepository.findAll(any(), any(), any()))
+        .thenReturn(new BookPage(List.of(buildBookMock()), new Pagination(1, 1L, 1, 1)));
 
-    var books = findAllBookUseCase.find("Title");
+    var books = findAllBookUseCase.find(1, 1, "Title");
 
     assertAll(
         () -> assertNotNull(books),
-        () -> assertEquals(1, books.size()),
-        () -> assertEquals(buildBookMock().getBookCode(), books.get(0).getBookCode()),
-        () -> assertEquals(buildBookMock().getTitle(), books.get(0).getTitle()),
-        () -> assertEquals(buildBookMock().getPublisher(), books.get(0).getPublisher()),
-        () -> assertEquals(buildBookMock().getEdition(), books.get(0).getEdition()),
-        () -> assertEquals(buildBookMock().getYearPublication(), books.get(0).getYearPublication()),
-        () -> assertEquals(buildBookMock().getPrice(), books.get(0).getPrice()),
-        () -> assertEquals(buildBookMock().getAuthorsIds(), books.get(0).getAuthorsIds()),
-        () -> assertEquals(buildBookMock().getSubjectsIds(), books.get(0).getSubjectsIds()),
-        () -> verify(bookRepository).findAll(any())
+        () -> assertEquals(1, books.getBooks().size()),
+        () -> assertEquals(buildBookMock().getBookCode(), books.getBooks().get(0).getBookCode()),
+        () -> assertEquals(buildBookMock().getTitle(), books.getBooks().get(0).getTitle()),
+        () -> assertEquals(buildBookMock().getPublisher(), books.getBooks().get(0).getPublisher()),
+        () -> assertEquals(buildBookMock().getEdition(), books.getBooks().get(0).getEdition()),
+        () -> assertEquals(buildBookMock().getYearPublication(), books.getBooks().get(0).getYearPublication()),
+        () -> assertEquals(buildBookMock().getPrice(), books.getBooks().get(0).getPrice()),
+        () -> assertEquals(buildBookMock().getAuthorsIds(), books.getBooks().get(0).getAuthorsIds()),
+        () -> assertEquals(buildBookMock().getSubjectsIds(), books.getBooks().get(0).getSubjectsIds()),
+        () -> verify(bookRepository).findAll(any(), any(), any())
     );
   }
 

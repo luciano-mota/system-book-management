@@ -3,6 +3,8 @@ package com.book.management.infrastructure.persistence.impl;
 import static java.util.Objects.nonNull;
 
 import com.book.management.domain.model.Book;
+import com.book.management.domain.model.BookPage;
+import com.book.management.domain.model.Pagination;
 import com.book.management.domain.repository.BookRepository;
 import com.book.management.infrastructure.exception.IsDataBaseException;
 import com.book.management.infrastructure.exception.IsNotFoundException;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,10 +57,21 @@ public class BookRepositoryImpl implements BookRepository {
 
   @Override
   @Transactional(readOnly = true)
-  public List<Book> findAll(String name) {
-    return bookJpaRepository.findAllBooksOrByName(name).stream()
-        .map(this::toModel)
-        .toList();
+  public BookPage findAll(Integer page, Integer size, String name) {
+    var pageable = PageRequest.of(page, size);
+    var booksPage = bookJpaRepository.findAllBooksOrByName(name, pageable);
+
+    return new BookPage(
+        booksPage.stream()
+            .map(this::toModel)
+            .toList(),
+        new Pagination(
+            booksPage.getTotalPages(),
+            booksPage.getTotalElements(),
+            booksPage.getNumber(),
+            booksPage.getSize()
+        )
+    );
   }
 
   @Override

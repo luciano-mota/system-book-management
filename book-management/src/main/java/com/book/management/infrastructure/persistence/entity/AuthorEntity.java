@@ -25,7 +25,7 @@ public class AuthorEntity {
   @GeneratedValue(strategy = IDENTITY)
   private Long id;
 
-  @Column(nullable = false, length = 40)
+  @Column(name = "name", nullable = false, length = 40)
   private String name;
 
   public AuthorEntity(String name) {

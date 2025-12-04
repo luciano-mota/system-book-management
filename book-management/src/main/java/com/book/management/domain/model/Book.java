@@ -6,7 +6,7 @@ import java.util.List;
 public class Book {
 
   private Long id;
-  private Integer bookCode;
+  private Long bookCode;
   private String title;
   private String publisher;
   private String edition;
@@ -17,7 +17,7 @@ public class Book {
 
   public Book() {}
 
-  public Book(Long id, Integer bookCode, String title, String publisher, String edition, String yearPublication, BigDecimal price,
+  public Book(Long id, Long bookCode, String title, String publisher, String edition, String yearPublication, BigDecimal price,
       List<Long> authorsIds, List<Long> subjectsIds) {
     this.id = id;
     this.bookCode = bookCode;
@@ -30,7 +30,7 @@ public class Book {
     this.subjectsIds = subjectsIds;
   }
 
-  public static Book newBook(Integer bookCode, String title, String publisher, String edition, String yearPublication, BigDecimal price,
+  public static Book newBook(Long bookCode, String title, String publisher, String edition, String yearPublication, BigDecimal price,
       List<Long> authorsIds, List<Long> subjectsIds) {
     return new Book(null, bookCode, title, publisher, edition, yearPublication, price, authorsIds, subjectsIds);
   }
@@ -43,11 +43,11 @@ public class Book {
     this.id = id;
   }
 
-  public Integer getBookCode() {
+  public Long getBookCode() {
     return bookCode;
   }
 
-  public void setBookCode(Integer bookCode) {
+  public void setBookCode(Long bookCode) {
     this.bookCode = bookCode;
   }
 

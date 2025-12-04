@@ -3,6 +3,7 @@ package com.book.management.application.controller;
 import static com.book.management.domain.mock.BookMock.buildBookMock;
 import static com.book.management.application.mock.BookRequestDTOMock.buildBookRequestMock;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -10,6 +11,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.book.management.domain.model.BookPage;
+import com.book.management.domain.model.Pagination;
 import com.book.management.domain.usecase.DeleteBookUseCase;
 import com.book.management.domain.usecase.FindAllBookUseCase;
 import com.book.management.domain.usecase.FindBookByIdUseCase;
@@ -22,11 +25,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestPropertySource(properties = "spring.flyway.validate-on-migrate=false")
 class BookControllerTest {
 
   @Autowired
@@ -75,7 +80,10 @@ class BookControllerTest {
   @Test
   void shouldReturnListOfBooksWithSuccess() throws Exception {
     var books = List.of(buildBookMock());
-    when(findAllBookUseCase.find(any())).thenReturn(books);
+    var pagination = new Pagination(1, 1L, 1, 1);
+    var booksPagination = new BookPage(books, pagination);
+
+    when(findAllBookUseCase.find(any(), anyInt(), any())).thenReturn(booksPagination);
 
     mockMvc.perform(get("/api/v1/books")
             .contentType(MediaType.APPLICATION_JSON))

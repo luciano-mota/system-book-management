@@ -1,7 +1,7 @@
 package com.book.management.domain.repository;
 
 import com.book.management.domain.model.Book;
-import java.util.List;
+import com.book.management.domain.model.BookPage;
 
 public interface BookRepository {
 
@@ -9,7 +9,7 @@ public interface BookRepository {
 
   Book findById(Long id);
 
-  List<Book> findAll(String name);
+  BookPage findAll(Integer page, Integer size, String name);
 
   void deleteById(Long id);
 

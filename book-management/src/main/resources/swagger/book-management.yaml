@@ -27,6 +27,8 @@ paths:
       summary: "List of Books"
       operationId: getAllBooks
       parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Size'
         - $ref: '#/components/parameters/NameQuery'
       responses:
         '200':
@@ -135,6 +137,8 @@ paths:
       summary: "List of Authors"
       operationId: getAllAuthors
       parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Size'
         - $ref: '#/components/parameters/NameQuery'
       responses:
         '200':
@@ -221,6 +225,8 @@ paths:
       summary: "List of Subjects"
       operationId: getAllSubjects
       parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Size'
         - $ref: '#/components/parameters/SubjectQuery'
       responses:
         '200':
@@ -297,6 +303,24 @@ paths:
 
 components:
   parameters:
+    Page:
+      name: "page"
+      in: "query"
+      description: "Page"
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    Size:
+      name: "size"
+      in: "query"
+      description: "Size"
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
     IdParam:
       name: "id"
       in: "path"
@@ -312,6 +336,8 @@ components:
       required: false
       schema:
         type: string
+        format: string
+        default: ""
     SubjectQuery:
       name: "subject"
       in: "query"
@@ -319,6 +345,8 @@ components:
       required: false
       schema:
         type: string
+        format: string
+        default: ""
 
   schemas:
     BookRequestDTO:

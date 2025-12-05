@@ -11,7 +11,7 @@ public final class BookEntityMock {
   public static BookEntity buildBookEntityMock() {
     return new BookEntity(
         1L,
-        123,
+        123L,
         "Title Test",
         "Publisher Test",
         "edition",

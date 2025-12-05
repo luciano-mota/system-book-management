@@ -9,7 +9,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.book.management.domain.model.Pagination;
 import com.book.management.domain.model.Subject;
+import com.book.management.domain.model.SubjectPage;
 import com.book.management.domain.usecase.DeleteSubjectUseCase;
 import com.book.management.domain.usecase.FindAllSubjectUseCase;
 import com.book.management.domain.usecase.FindSubjectByIdUseCase;
@@ -77,7 +79,8 @@ class SubjectControllerTest {
   @Test
   void shouldReturnListOfSubjectsWithSuccess() throws Exception {
     var subjects = List.of(new Subject(2L, "Science"));
-    when(findAllSubjectUseCase.findAll(any())).thenReturn(subjects);
+    when(findAllSubjectUseCase.findAll(any(), any(), any()))
+        .thenReturn(new SubjectPage(subjects, new Pagination(1, 1L, 0, 1)));
 
     mockMvc.perform(get("/api/v1/subjects")
             .contentType(MediaType.APPLICATION_JSON))

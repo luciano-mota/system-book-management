@@ -8,7 +8,7 @@ public final class BookMock {
 
   public static Book buildBookMock() {
     return Book.newBook(
-        123,
+        123L,
         "Title",
         "Publisher",
         "1st Edition",

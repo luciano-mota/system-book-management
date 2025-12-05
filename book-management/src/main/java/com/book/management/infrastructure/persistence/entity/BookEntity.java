@@ -31,9 +31,10 @@ public class BookEntity {
   @GeneratedValue(strategy = IDENTITY)
   private Long id;
 
-  private Integer bookCode;
+  @Column(name = "book_code", nullable = false, unique = true)
+  private Long bookCode;
 
-  @Column(nullable = false, length = 40)
+  @Column(name = "title", nullable = false, length = 40)
   private String title;
 
   @Column(nullable = false, length = 40)
@@ -51,14 +52,14 @@ public class BookEntity {
   @ManyToMany
   @JoinTable(
       name = "tb_book_author",
-      joinColumns = @JoinColumn(name = "book_code", referencedColumnName = "bookCode"),
-      inverseJoinColumns = @JoinColumn(name = "author_code"))
+      joinColumns = @JoinColumn(name = "book_code", referencedColumnName = "book_code"),
+      inverseJoinColumns = @JoinColumn(name = "author_code", referencedColumnName = "author_code"))
   private Set<AuthorEntity> authors;
 
   @ManyToMany
   @JoinTable(
       name = "tb_book_subject",
-      joinColumns = @JoinColumn(name = "book_code", referencedColumnName = "bookCode"),
-      inverseJoinColumns = @JoinColumn(name = "subject_code"))
+      joinColumns = @JoinColumn(name = "book_code", referencedColumnName = "book_code"),
+      inverseJoinColumns = @JoinColumn(name = "subject_code", referencedColumnName = "subject_code"))
   private Set<SubjectEntity> subjects;
 }

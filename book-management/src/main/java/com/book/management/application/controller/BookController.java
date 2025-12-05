@@ -1,6 +1,8 @@
 package com.book.management.application.controller;
 
+import static com.book.management.application.controller.response.PageHeadersResponseDTO.buildHttpHeaders;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 
 import com.book.management.application.controller.response.GenericRestReturnDTO;
 import com.book.management.application.mapper.BookMapper;
@@ -44,12 +46,13 @@ public class BookController implements BooksApi {
   }
 
   @Override
-  public ResponseEntity<GenericRestReturnDTO> getAllBooks(HttpServletRequest httpServletRequest, String name) {
-    var books = findAllBookUseCase.find(name).stream()
+  public ResponseEntity<GenericRestReturnDTO> getAllBooks(HttpServletRequest httpServletRequest, Integer page, Integer size, String name) {
+    var booksPage = findAllBookUseCase.find(page, size, name);
+    var books = booksPage.getBooks().stream()
         .map(bookMapper::toResponse)
         .toList();
 
-    return ResponseEntity.ok(new GenericRestReturnDTO(books));
+    return new ResponseEntity<>(new GenericRestReturnDTO(books), buildHttpHeaders(booksPage.getPagination()), OK);
   }
 
   @Override

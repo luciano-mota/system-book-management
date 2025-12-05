@@ -26,6 +26,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
@@ -96,16 +97,16 @@ class BookRepositoryJpaImplTest {
 
   @Test
   void shouldReturnAllBooksWithSuccess() {
-    when(repository.findAllBooksOrByName(any())).thenReturn(List.of(buildBookEntityMock()));
+    when(repository.findAllBooksOrByName(any(), any())).thenReturn(new PageImpl<>(List.of(buildBookEntityMock())));
 
-    var books = bookRepositoryImpl.findAll("Title Test");
+    var books = bookRepositoryImpl.findAll(1, 2,"Title Test");
 
     assertAll(
         () -> assertNotNull(books),
-        () -> assertEquals(1, books.size()),
-        () -> assertEquals(1L, books.get(0).getId()),
-        () -> assertEquals("Title Test", books.get(0).getTitle()),
-        () -> verify(repository).findAllBooksOrByName(any())
+        () -> assertEquals(1, books.getBooks().size()),
+        () -> assertEquals(1L, books.getBooks().get(0).getId()),
+        () -> assertEquals("Title Test", books.getBooks().get(0).getTitle()),
+        () -> verify(repository).findAllBooksOrByName(any(), any())
     );
   }
 

@@ -1,6 +1,8 @@
 package com.book.management.application.controller;
 
+import static com.book.management.application.controller.response.PageHeadersResponseDTO.buildHttpHeaders;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 
 import com.book.management.application.controller.response.GenericRestReturnDTO;
 import com.book.management.application.mapper.SubjectMapper;
@@ -42,11 +44,12 @@ public class SubjectController implements SubjectsApi {
   }
 
   @Override
-  public ResponseEntity<GenericRestReturnDTO> getAllSubjects(HttpServletRequest httpServletRequest, String subject) {
-    var subjects = findAllSubjectUseCase.findAll(subject).stream()
+  public ResponseEntity<GenericRestReturnDTO> getAllSubjects(HttpServletRequest httpServletRequest, Integer page, Integer size, String subject) {
+    var subjects = findAllSubjectUseCase.findAll(page, size, subject);
+    var subjectsResponse = subjects.getSubjects().stream()
         .map(subjectMapper::toResponse)
         .toList();
-    return ResponseEntity.ok(new GenericRestReturnDTO(subjects));
+    return new ResponseEntity<>(new GenericRestReturnDTO(subjectsResponse), buildHttpHeaders(subjects.getPagination()), OK);
   }
 
   @Override

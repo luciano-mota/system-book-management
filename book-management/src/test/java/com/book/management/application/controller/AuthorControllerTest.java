@@ -9,6 +9,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.book.management.domain.model.Author;
+import com.book.management.domain.model.AuthorPage;
+import com.book.management.domain.model.Pagination;
 import com.book.management.domain.usecase.DeleteAuthorUseCase;
 import com.book.management.domain.usecase.FindAllAuthorUseCase;
 import com.book.management.domain.usecase.FindAuthorByIdUseCase;
@@ -74,7 +76,8 @@ class AuthorControllerTest {
   @Test
   void shouldReturnListOfAuthorsWithSuccess() throws Exception {
     var authors = List.of(new Author(2L, "Jane Doe"));
-    when(findAllAuthorUseCase.find(any())).thenReturn(authors);
+    when(findAllAuthorUseCase.find(any(), any(), any()))
+        .thenReturn(new AuthorPage(authors, new Pagination(1, 1L, 0, 1)));
 
     mockMvc.perform(get("/api/v1/authors")
             .contentType(MediaType.APPLICATION_JSON))

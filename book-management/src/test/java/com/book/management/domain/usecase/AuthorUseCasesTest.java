@@ -9,6 +9,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.book.management.domain.model.Author;
+import com.book.management.domain.model.AuthorPage;
+import com.book.management.domain.model.Pagination;
 import com.book.management.domain.repository.AuthorRepository;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -69,15 +71,20 @@ class AuthorUseCasesTest {
 
   @Test
   void shouldFindAllAuthorWithSuccess() {
-    when(authorRepository.findAll(any())).thenReturn(List.of(new Author(1L, "Teste")));
+    when(authorRepository.findAll(any(), any(), any())).thenReturn(
+          new AuthorPage(
+            List.of(new Author(1L, "Teste")),
+            new Pagination(1, 1L, 0, 1)
+          )
+      );
 
-    var authors = findAllAuthorUseCase.find("Teste");
+    var authors = findAllAuthorUseCase.find(1, 1, "Teste");
 
     assertAll(
         () -> assertNotNull(authors),
-        () -> assertEquals(1, authors.size()),
-        () -> assertEquals(1L, authors.get(0).getId()),
-        () -> assertEquals("Teste", authors.get(0).getName())
+        () -> assertEquals(1, authors.getAuthors().size()),
+        () -> assertEquals(1L, authors.getAuthors().get(0).getId()),
+        () -> assertEquals("Teste", authors.getAuthors().get(0).getName())
     );
   }
 

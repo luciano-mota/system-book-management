@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
@@ -77,16 +78,16 @@ class AuthorRepositoryImplTest {
 
   @Test
   void shouldFindAllAuthorWithSuccess() {
-    when(repository.findAllAuthorOrByName(any())).thenReturn(List.of(new AuthorEntity(1L, "Teste")));
+    when(repository.findAllAuthorOrByName(any(), any())).thenReturn(new PageImpl<>(List.of(new AuthorEntity(1L, "Teste"))));
 
-    var authors = authorRepositoryImpl.findAll("Teste");
+    var authors = authorRepositoryImpl.findAll(1, 1, "Teste");
 
     assertAll(
         () -> assertNotNull(authors),
-        () -> assertEquals(1, authors.size()),
-        () -> assertEquals(1L, authors.get(0).getId()),
-        () -> assertEquals("Teste", authors.get(0).getName()),
-        () -> verify(repository).findAllAuthorOrByName(any())
+        () -> assertEquals(1, authors.getAuthors().size()),
+        () -> assertEquals(1L, authors.getAuthors().get(0).getId()),
+        () -> assertEquals("Teste", authors.getAuthors().get(0).getName()),
+        () -> verify(repository).findAllAuthorOrByName(any(), any())
     );
   }
 

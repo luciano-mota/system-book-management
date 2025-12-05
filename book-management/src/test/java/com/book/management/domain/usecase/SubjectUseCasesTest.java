@@ -8,7 +8,9 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.book.management.domain.model.Pagination;
 import com.book.management.domain.model.Subject;
+import com.book.management.domain.model.SubjectPage;
 import com.book.management.domain.repository.SubjectRepository;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -69,15 +71,21 @@ class SubjectUseCasesTest {
 
   @Test
   void shouldFindAllSubjectWithSuccess() {
-    when(subjectRepository.findAll(any())).thenReturn(List.of(new Subject(1L, "Teste")));
+    when(subjectRepository.findAll(any(), any(), any()))
+        .thenReturn(
+            new SubjectPage(
+                List.of(new Subject(1L, "Teste")),
+                new Pagination(1, 1L, 1, 1)
+            )
+        );
 
-    var subjects = findAllSubjectUseCase.findAll("Teste");
+    var subjects = findAllSubjectUseCase.findAll(1, 1, "Teste");
 
     assertAll(
         () -> assertNotNull(subjects),
-        () -> assertEquals(1, subjects.size()),
-        () -> assertEquals(1L, subjects.get(0).getId()),
-        () -> assertEquals("Teste", subjects.get(0).getDescription())
+        () -> assertEquals(1, subjects.getSubjects().size()),
+        () -> assertEquals(1L, subjects.getSubjects().get(0).getId()),
+        () -> assertEquals("Teste", subjects.getSubjects().get(0).getDescription())
     );
   }
 

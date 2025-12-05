@@ -3,39 +3,30 @@ import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 
 // Componentes filhos que serão usados nesta página.
-// ListaLivros: Exibe a tabela de livros.
-import ListaLivros from "../components/books/ListaLivros";
-// ModalLivro: Formulário modal para cadastrar ou editar um livro.
-import ModalLivro from "../components/books/ModalLivro";
-// Paginacao: Componente para navegar entre as páginas de resultados.
-import Paginacao from "../components/common/Paginacao";
 
-// Endereços das APIs que serão consumidas.
+import ListaLivros from "../components/books/ListaLivros";// -> ListaLivros: Exibe a tabela de livros.
+import ModalLivro from "../components/books/ModalLivro";// -> ModalLivro: Formulário modal para cadastrar ou editar um livro.
+import Paginacao from "../components/common/Paginacao";// -> Paginacao: Componente para navegar entre as páginas de resultados.
+
+// rotas das APIs que serão consumidas.
 const API_LIVROS = "http://localhost:8080/api/v1/books"; // Endpoint para operações com livros
 const API_AUTORES = "http://localhost:8080/api/v1/authors"; // Endpoint para buscar autores (para enriquecer dados do livro)
 const API_ASSUNTOS = "http://localhost:8080/api/v1/subjects"; // Endpoint para buscar assuntos (para enriquecer dados do livro)
 
 export default function Livros() {
   // --- ESTADOS DO COMPONENTE ---
-  // livros: Armazena a lista de livros exibida na tabela.
-  const [livros, setLivros] = useState([]);
-  // exibirModal: Controla a visibilidade do modal de cadastro/edição.
-  const [exibirModal, setExibirModal] = useState(false);
-  // livroEmEdicao: Armazena os dados do livro que está sendo editado (ou null para novo cadastro).
-  const [livroEmEdicao, setLivroEmEdicao] = useState(null);
-  // termoBusca: Armazena o texto digitado pelo usuário para filtrar a lista de livros.
-  const [termoBusca, setTermoBusca] = useState("");
-  // paginaAtual: Indica a página atual dos resultados da busca (começa em 0).
-  const [paginaAtual, setPaginaAtual] = useState(0);
-  // totalPaginas: Armazena o número total de páginas disponível na API.
-  const [totalPaginas, setTotalPaginas] = useState(0);
-  // totalRegistros: Armazena o número total de livros encontrados na API.
-  const [totalRegistros, setTotalRegistros] = useState(0);
+  const [livros, setLivros] = useState([]);// -> livros: Armazena a lista de livros exibida na tabela.
+  const [exibirModal, setExibirModal] = useState(false);// -> exibirModal: Controla a visibilidade do modal de cadastro/edição.
+  const [livroEmEdicao, setLivroEmEdicao] = useState(null);// -> livroEmEdicao: Armazena os dados do livro que está sendo editado (ou null para novo cadastro).
+  const [termoBusca, setTermoBusca] = useState("");// -> termoBusca: Armazena o texto digitado pelo usuário para filtrar a lista de livros.
+  const [paginaAtual, setPaginaAtual] = useState(0);// -> paginaAtual: Indica a página atual dos resultados da busca (começa em 0).
+  const [totalPaginas, setTotalPaginas] = useState(0);// -> totalPaginas: Armazena o número total de páginas disponível na API.
+  const [totalRegistros, setTotalRegistros] = useState(0);// -> totalRegistros: Armazena o número total de livros encontrados na API.
 
   // --- FUNÇÕES DE LÓGICA E DADOS ---
 
   /**
-   * carregarLivros: Função assíncrona para buscar livros, autores e assuntos da API.
+   * carregarLivros: é um método assíncrono para buscar livros, autores e assuntos da API.
    * Utiliza useCallback para memorizar a função e evitar recriações desnecessárias,
    * otimizando o desempenho e evitando loops infinitos no useEffect.
    */
@@ -43,9 +34,8 @@ export default function Livros() {
     try {
       // Realiza chamadas paralelas para buscar livros, autores e assuntos.
       // A busca de livros inclui o termo de busca e os parâmetros de paginação.
-      // CORREÇÃO AQUI: Buscando todos os autores e assuntos (size=9999) para garantir que o mapa esteja completo.
+      // Buscando todos os autores e assuntos (size=9999) para garantir que o mapa esteja completo.
       const [respostaLivros, respostaAutores, respostaAssuntos] = await Promise.all([
-        // CORREÇÃO AQUI: Alterado 'nome' para 'name' no parâmetro de busca para a API de livros.
         axios.get(API_LIVROS, { params: { name: termoBusca, page: paginaAtual, size: 10 } }),
         axios.get(API_AUTORES, { params: { size: 9999 } }), // Busca todos os autores
         axios.get(API_ASSUNTOS, { params: { size: 9999 } })  // Busca todos os assuntos

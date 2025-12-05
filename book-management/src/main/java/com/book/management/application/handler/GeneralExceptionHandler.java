@@ -1,6 +1,7 @@
 package com.book.management.application.handler;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -8,6 +9,7 @@ import com.book.management.infrastructure.exception.IsDataBaseException;
 import com.book.management.infrastructure.exception.IsNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -44,6 +46,20 @@ public class GeneralExceptionHandler {
             .build());
   }
 
+
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  public ResponseEntity<ErrorDTO> handlerConstraintViolationException(DataIntegrityViolationException ex, HttpServletRequest request) {
+    return ResponseEntity.status(409)
+        .body(
+            ErrorDTO.builder()
+                .timestamp(LocalDateTime.now().toString())
+                .status(409)
+                .error(CONFLICT.name())
+                .message("Integrity violation")
+                .path(request.getRequestURI())
+                .build()
+        );
+  }
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorDTO> handleGenericException(Exception ex,

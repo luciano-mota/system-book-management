@@ -21,10 +21,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
+@Repository
 @RequiredArgsConstructor
 public class BookRepositoryImpl implements BookRepository {
 
@@ -38,9 +38,7 @@ public class BookRepositoryImpl implements BookRepository {
   public Book save(Book book) {
     var bookEntity = new BookEntity();
     mapBookToEntity(book, bookEntity);
-
     var savedBookEntity = bookJpaRepository.save(bookEntity);
-
     associateAuthorsAndSubjects(book, savedBookEntity);
 
     savedBookEntity = bookJpaRepository.save(savedBookEntity);

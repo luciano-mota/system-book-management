@@ -1,5 +1,6 @@
 package com.book.management.application.controller;
 
+import static com.book.management.application.controller.response.PageHeadersResponseDTO.buildHttpHeaders;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -14,7 +15,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.api.BooksApi;
 import org.openapitools.model.BookRequestDTO;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -52,13 +52,7 @@ public class BookController implements BooksApi {
         .map(bookMapper::toResponse)
         .toList();
 
-    HttpHeaders headers = new HttpHeaders();
-    headers.add("X-Total-Count", String.valueOf(booksPage.getPagination().getTotalElements()));
-    headers.add("X-Total-Pages", String.valueOf(booksPage.getPagination().getTotalElements()));
-    headers.add("X-Current-Page", String.valueOf(booksPage.getPagination().getPage()));
-    headers.add("X-Page-Size", String.valueOf(booksPage.getPagination().getSize()));
-
-    return new ResponseEntity<>(new GenericRestReturnDTO(books), headers, OK);
+    return new ResponseEntity<>(new GenericRestReturnDTO(books), buildHttpHeaders(booksPage.getPagination()), OK);
   }
 
   @Override

@@ -1,12 +1,11 @@
 package com.book.management.domain.usecase;
 
-import com.book.management.domain.model.Subject;
+import com.book.management.domain.model.SubjectPage;
 import com.book.management.domain.repository.SubjectRepository;
-import java.util.List;
 
 public record FindAllSubjectUseCase(SubjectRepository subjectRepository) {
 
-  public List<Subject> findAll(String subject) {
-    return subjectRepository.findAll(subject);
+  public SubjectPage findAll(Integer page, Integer size, String subject) {
+    return subjectRepository.findAll(page, size, subject);
   }
 }

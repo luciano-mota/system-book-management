@@ -137,6 +137,8 @@ paths:
       summary: "List of Authors"
       operationId: getAllAuthors
       parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Size'
         - $ref: '#/components/parameters/NameQuery'
       responses:
         '200':
@@ -223,6 +225,8 @@ paths:
       summary: "List of Subjects"
       operationId: getAllSubjects
       parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Size'
         - $ref: '#/components/parameters/SubjectQuery'
       responses:
         '200':

@@ -1,15 +1,17 @@
 package com.book.management.infrastructure.persistence.impl;
 
+import com.book.management.domain.model.Pagination;
 import com.book.management.domain.model.Subject;
+import com.book.management.domain.model.SubjectPage;
 import com.book.management.domain.repository.SubjectRepository;
 import com.book.management.infrastructure.exception.IsDataBaseException;
 import com.book.management.infrastructure.exception.IsNotFoundException;
 import com.book.management.infrastructure.persistence.entity.SubjectEntity;
 import com.book.management.infrastructure.persistence.repository.SubjectJpaRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,10 +38,26 @@ public class SubjectRepositoryImpl implements SubjectRepository {
 
   @Override
   @Transactional(readOnly = true)
-  public List<Subject> findAll(String subject) {
-    return subjectJpaRepository.findAllSubjectOrByDescription(subject).stream()
-        .map(subjectEntity -> new Subject(subjectEntity.getId(), subjectEntity.getDescription()))
+  public SubjectPage findAll(Integer page, Integer size, String subject) {
+    var pageable = PageRequest.of(page, size);
+    var subjectPage = subjectJpaRepository.findAllSubjectOrByDescription(subject, pageable);
+
+    var subjectList = subjectPage.getContent().stream()
+        .map(subjectEntity -> new Subject(
+            subjectEntity.getId(),
+            subjectEntity.getDescription())
+        )
         .toList();
+
+    return new SubjectPage(
+        subjectList,
+        new Pagination(
+            subjectPage.getTotalPages(),
+            subjectPage.getTotalElements(),
+            subjectPage.getNumber(),
+            subjectPage.getSize()
+        )
+    );
   }
 
   @Override

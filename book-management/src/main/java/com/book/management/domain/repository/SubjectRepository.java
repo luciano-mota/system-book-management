@@ -1,7 +1,7 @@
 package com.book.management.domain.repository;
 
 import com.book.management.domain.model.Subject;
-import java.util.List;
+import com.book.management.domain.model.SubjectPage;
 
 public interface SubjectRepository {
 
@@ -9,7 +9,7 @@ public interface SubjectRepository {
 
   Subject findById(Long id);
 
-  List<Subject> findAll(String subject);
+  SubjectPage findAll(Integer page, Integer size, String subject);
 
   void deleteById(Long id);
 

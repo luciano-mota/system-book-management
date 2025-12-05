@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
@@ -77,16 +78,17 @@ class SubjectRepositoryJpaImplTest {
 
   @Test
   void shouldFindAllSubjectWithSuccess() {
-    when(repository.findAllSubjectOrByDescription(any())).thenReturn(List.of(new SubjectEntity(1L, "Teste")));
+    when(repository.findAllSubjectOrByDescription(any(), any()))
+        .thenReturn(new PageImpl<>(List.of(new SubjectEntity(1L, "Teste"))));
 
-    var authors = subjectRepositoryImpl.findAll("Teste");
+    var authors = subjectRepositoryImpl.findAll(1, 1, "Teste");
 
     assertAll(
         () -> assertNotNull(authors),
-        () -> assertEquals(1, authors.size()),
-        () -> assertEquals(1L, authors.get(0).getId()),
-        () -> assertEquals("Teste", authors.get(0).getDescription()),
-        () -> verify(repository).findAllSubjectOrByDescription(any())
+        () -> assertEquals(1, authors.getSubjects().size()),
+        () -> assertEquals(1L, authors.getSubjects().get(0).getId()),
+        () -> assertEquals("Teste", authors.getSubjects().get(0).getDescription()),
+        () -> verify(repository).findAllSubjectOrByDescription(any(), any())
     );
   }
 

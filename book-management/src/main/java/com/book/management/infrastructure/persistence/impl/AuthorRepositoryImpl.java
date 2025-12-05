@@ -1,15 +1,17 @@
 package com.book.management.infrastructure.persistence.impl;
 
 import com.book.management.domain.model.Author;
+import com.book.management.domain.model.AuthorPage;
+import com.book.management.domain.model.Pagination;
 import com.book.management.domain.repository.AuthorRepository;
 import com.book.management.infrastructure.exception.IsDataBaseException;
 import com.book.management.infrastructure.exception.IsNotFoundException;
 import com.book.management.infrastructure.persistence.entity.AuthorEntity;
 import com.book.management.infrastructure.persistence.repository.AuthorJpaRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,10 +38,23 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
   @Override
   @Transactional(readOnly = true)
-  public List<Author> findAll(String name) {
-    return authorJpaRepository.findAllAuthorOrByName(name).stream()
+  public AuthorPage findAll(Integer page, Integer size, String name) {
+    var pageable = PageRequest.of(page, size);
+    var authorsPage = authorJpaRepository.findAllAuthorOrByName(name, pageable);
+
+    var author = authorsPage.getContent().stream()
         .map(authorEntity -> new Author(authorEntity.getId(), authorEntity.getName()))
         .toList();
+
+    return new AuthorPage(
+        author,
+        new Pagination(
+            authorsPage.getTotalPages(),
+            authorsPage.getTotalElements(),
+            authorsPage.getNumber(),
+            authorsPage.getSize()
+        )
+    );
   }
 
   @Override

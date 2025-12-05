@@ -1,6 +1,8 @@
 package com.book.management.application.controller;
 
+import static com.book.management.application.controller.response.PageHeadersResponseDTO.buildHttpHeaders;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 
 import com.book.management.application.controller.response.GenericRestReturnDTO;
 import com.book.management.application.mapper.AuthorMapper;
@@ -45,12 +47,14 @@ public class AuthorController implements AuthorsApi {
   }
 
   @Override
-  public ResponseEntity<GenericRestReturnDTO> getAllAuthors(HttpServletRequest httpServletRequest, String name) {
-    var authors = findAllAuthorUseCase.find(name).stream()
+  public ResponseEntity<GenericRestReturnDTO> getAllAuthors(HttpServletRequest httpServletRequest, Integer page, Integer size, String name) {
+    var authors = findAllAuthorUseCase.find(page, size, name);
+    var authorsResponse = authors.getAuthors()
+        .stream()
         .map(authorMapper::toResponse)
         .toList();
 
-    return ResponseEntity.ok(new GenericRestReturnDTO(authors));
+    return new ResponseEntity<>(new GenericRestReturnDTO(authorsResponse), buildHttpHeaders(authors.getPagination()), OK);
   }
 
   @Override

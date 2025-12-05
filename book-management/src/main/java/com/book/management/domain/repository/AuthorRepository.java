@@ -1,7 +1,7 @@
 package com.book.management.domain.repository;
 
 import com.book.management.domain.model.Author;
-import java.util.List;
+import com.book.management.domain.model.AuthorPage;
 
 public interface AuthorRepository {
 
@@ -9,7 +9,7 @@ public interface AuthorRepository {
 
   Author findById(Long id);
 
-  List<Author> findAll(String name);
+  AuthorPage findAll(Integer page, Integer size, String name);
 
   Author update(Author author);
 

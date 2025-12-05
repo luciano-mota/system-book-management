@@ -6,10 +6,10 @@ import com.book.management.infrastructure.persistence.mapper.ReportMapper;
 import com.book.management.infrastructure.persistence.repository.ReportBookViewRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
+@Repository
 @RequiredArgsConstructor
 public class ReportRepositoryImpl implements ReportRepository {
 

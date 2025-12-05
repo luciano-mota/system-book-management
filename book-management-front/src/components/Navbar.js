@@ -11,16 +11,16 @@ export default function Navbar() {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <NavLink className="nav-link" to="/books">Livros</NavLink>
+              <NavLink className="nav-link" to="/livros">Livros</NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to="/authors">Autores</NavLink>
+              <NavLink className="nav-link" to="/autores">Autores</NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to="/subjects">Assuntos</NavLink>
+              <NavLink className="nav-link" to="/assuntos">Assuntos</NavLink>
             </li>
-            <li className="nav-item"> {/* Novo item de navegação */}
-              <NavLink className="nav-link" to="/reports">Relatórios</NavLink>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/relatorios">Relatórios</NavLink>
             </li>
           </ul>
         </div>

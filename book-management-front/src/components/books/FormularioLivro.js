@@ -67,7 +67,7 @@ export default function FormularioLivro({
       <div className="row">
         <div className="col-md-6 mb-2">
           <label>Título</label>
-          <input type="text" name="title" value={dadosLivro.title} onChange={onMudar} className="form-control" required />
+          <input type="text" name="title" value={dadosLivro.title} onChange={onMudar} className="form-control" required maxLength="40" />
         </div>
         <div className="col-md-6 mb-2">
           <label>Código</label>
@@ -79,11 +79,11 @@ export default function FormularioLivro({
       <div className="row">
         <div className="col-md-6 mb-2">
           <label>Editora</label>
-          <input type="text" name="publisher" value={dadosLivro.publisher} onChange={onMudar} className="form-control" />
+          <input type="text" name="publisher" value={dadosLivro.publisher} onChange={onMudar} className="form-control" maxLength="40" />
         </div>
         <div className="col-md-6 mb-2">
           <label>Edição</label>
-          <input type="text" name="edition" value={dadosLivro.edition} onChange={onMudar} className="form-control" />
+          <input type="text" name="edition" value={dadosLivro.edition} onChange={onMudar} className="form-control" maxLength="40" />
         </div>
       </div>
 

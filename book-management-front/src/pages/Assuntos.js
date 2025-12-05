@@ -119,10 +119,11 @@ export default function Assuntos() {
           <input
               type="text"
               className="form-control mb-2"
-              placeholder="Descrição do assunto"
+              placeholder="Assunto"
               value={descricao}
               onChange={(e) => setDescricao(e.target.value)} // Atualiza o estado 'descricao' conforme o input.
               required // Campo obrigatório.
+              maxLength="20"
           />
           {/* Botão de submissão do formulário, muda o texto dependendo se está editando ou cadastrando. */}
           <button className="btn btn-primary" type="submit">{idEdicao ? "Atualizar" : "Cadastrar"}</button>
@@ -143,7 +144,7 @@ export default function Assuntos() {
         <input
           type="text"
           className="form-control"
-          placeholder="Pesquisar assuntos por descrição..."
+          placeholder="Pesquisar assuntos..."
           value={termoBusca}
           onChange={(e) => setTermoBusca(e.target.value)} // Atualiza o estado 'termoBusca'.
         />

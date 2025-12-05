@@ -123,6 +123,7 @@ export default function Autores() {
           placeholder="Nome do autor"
           value={nome}
           onChange={(e) => setNome(e.target.value)} // Atualiza o estado 'nome' conforme o input.
+          maxLength="40"
         />
         {/* Botão de submissão do formulário, muda o texto dependendo se está editando ou cadastrando. */}
         <button className="btn btn-primary" type="submit">{idEdicao ? "Atualizar" : "Cadastrar"}</button>

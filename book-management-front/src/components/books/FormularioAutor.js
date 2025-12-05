@@ -102,6 +102,7 @@ export default function FormularioAutor({ onAutorSelecionado }) {
           placeholder="Pesquise ou cadastre um novo autor"
           autoComplete="off" // Desativa o preenchimento automático do navegador.
           required // Campo obrigatório.
+          maxLength="40" // Limita a entrada a 40 caracteres.
         />
         {/* Exibe a lista de resultados da busca apenas se houver resultados. */}
         {resultadosBusca.length > 0 && (

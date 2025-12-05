@@ -101,6 +101,7 @@ export default function FormularioAssunto({ onAssuntoSelecionado }) {
           placeholder="Pesquise ou cadastre um novo assunto"
           autoComplete="off" // Desativa o preenchimento automático do navegador.
           required // Campo obrigatório.
+          maxLength="20"
         />
         {/* Exibe a lista de resultados da busca apenas se houver resultados. */}
         {resultadosBusca.length > 0 && (

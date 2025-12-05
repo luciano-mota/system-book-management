@@ -43,10 +43,12 @@ export default function Livros() {
     try {
       // Realiza chamadas paralelas para buscar livros, autores e assuntos.
       // A busca de livros inclui o termo de busca e os parâmetros de paginação.
+      // CORREÇÃO AQUI: Buscando todos os autores e assuntos (size=9999) para garantir que o mapa esteja completo.
       const [respostaLivros, respostaAutores, respostaAssuntos] = await Promise.all([
-        axios.get(API_LIVROS, { params: { nome: termoBusca, page: paginaAtual, size: 10 } }),
-        axios.get(API_AUTORES), // Autores e assuntos são carregados sem paginação para o modal
-        axios.get(API_ASSUNTOS)  // (assumindo que o total não é excessivamente grande para o modal)
+        // CORREÇÃO AQUI: Alterado 'nome' para 'name' no parâmetro de busca para a API de livros.
+        axios.get(API_LIVROS, { params: { name: termoBusca, page: paginaAtual, size: 10 } }),
+        axios.get(API_AUTORES, { params: { size: 9999 } }), // Busca todos os autores
+        axios.get(API_ASSUNTOS, { params: { size: 9999 } })  // Busca todos os assuntos
       ]);
 
       // Cria mapas para facilitar a busca de nomes de autores e descrições de assuntos por ID.
@@ -55,7 +57,6 @@ export default function Livros() {
 
       // Enriquecimento dos dados dos livros:
       // Mapeia os IDs de autores e assuntos dos livros para seus respectivos nomes/descrições.
-      // CORREÇÃO AQUI: Mantendo as propriedades 'name' e 'description' para compatibilidade com FormularioLivro.
       const livrosEnriquecidos = respostaLivros.data.data.map(livro => ({
         ...livro,
         authors: livro.authors.map(autorId => ({ id: autorId, name: mapaAutores.get(autorId) || "Autor desconhecido" })),

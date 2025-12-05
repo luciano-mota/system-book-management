@@ -23,7 +23,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-    platform: linux/amd64
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/book_management_db
       SPRING_DATASOURCE_USERNAME: postgres

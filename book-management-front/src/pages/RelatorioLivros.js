@@ -2,61 +2,61 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import html2pdf from 'html2pdf.js';
 
-const API_REPORTS = "http://localhost:8080/api/v1/reports";
+const API_RELATORIOS = "http://localhost:8080/api/v1/reports";
 
-export default function BookReport() {
-  const [reportData, setReportData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const reportRef = useRef(); // Ref para o conteúdo do relatório a ser exportado
+export default function RelatorioLivros() {
+  const [dadosRelatorio, setDadosRelatorio] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState(null);
+  const relatorioRef = useRef();
 
   useEffect(() => {
-    const fetchReportData = async () => {
+    const buscarDadosRelatorio = async () => {
       try {
-        const response = await axios.get(API_REPORTS);
-        setReportData(response.data.data);
+        const resposta = await axios.get(API_RELATORIOS);
+        setDadosRelatorio(resposta.data.data);
       } catch (err) {
-        setError("Erro ao carregar dados do relatório.");
+        setErro("Erro ao carregar dados do relatório.");
         console.error("Erro ao carregar dados do relatório:", err);
       } finally {
-        setLoading(false);
+        setCarregando(false);
       }
     };
 
-    fetchReportData();
+    buscarDadosRelatorio();
   }, []);
 
-  const handleExportPdf = () => {
-    const element = reportRef.current;
+  const exportarPdf = () => {
+    const elemento = relatorioRef.current;
     const opt = {
       margin:       1,
       filename:     'relatorio-livros.pdf',
       image:        { type: 'jpeg', quality: 0.98 },
       html2canvas:  { scale: 2 },
-      jsPDF:        { unit: 'in', format: 'letter', orientation: 'landscape' } // Orientação paisagem para tabelas largas
+      jsPDF:        { unit: 'in', format: 'letter', orientation: 'landscape' }
     };
 
-    html2pdf().set(opt).from(element).save();
+    html2pdf().set(opt).from(elemento).save();
   };
 
-  if (loading) {
+  if (carregando) {
     return <div className="container mt-4">Carregando relatório...</div>;
   }
 
-  if (error) {
-    return <div className="container mt-4 text-danger">{error}</div>;
+  if (erro) {
+    return <div className="container mt-4 text-danger">{erro}</div>;
   }
 
   return (
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>Relatório Completo de Livros</h2>
-        <button className="btn btn-primary" onClick={handleExportPdf}>
+        <button className="btn btn-primary" onClick={exportarPdf}>
           Gerar PDF
         </button>
       </div>
 
-      <div ref={reportRef}> {/* Conteúdo a ser exportado */}
+      <div ref={relatorioRef}>
         <h3 className="text-center mb-3">Relatório de Livros</h3>
         <table className="table table-striped table-bordered">
           <thead>
@@ -72,8 +72,8 @@ export default function BookReport() {
             </tr>
           </thead>
           <tbody>
-            {reportData.length > 0 ? (
-              reportData.map((item, index) => (
+            {dadosRelatorio.length > 0 ? (
+              dadosRelatorio.map((item, index) => (
                 <tr key={index}>
                   <td>{item.bookCode}</td>
                   <td>{item.bookTitle}</td>

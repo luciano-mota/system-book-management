@@ -11,8 +11,8 @@ export default function Home() {
         <hr className="my-4" />
         <p>Comece agora mesmo a organizar seus livros.</p>
         <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
-          <Link className="btn btn-primary btn-lg" to="/books">Ver Livros</Link>
-          <Link className="btn btn-outline-secondary btn-lg" to="/authors">Ver Autores</Link>
+          <Link className="btn btn-primary btn-lg" to="/livros">Ver Livros</Link>
+          <Link className="btn btn-outline-secondary btn-lg" to="/autores">Ver Autores</Link>
         </div>
       </div>
     </div>

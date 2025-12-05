@@ -2,10 +2,10 @@ import './App.css';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
-import Books from "./pages/Books";
-import Authors from "./pages/Authors";
-import Subjects from "./pages/Subjects";
-import BookReport from "./pages/BookReport"; // Importar o novo componente
+import Livros from "./pages/Livros";
+import Autores from "./pages/Autores";
+import Assuntos from "./pages/Assuntos";
+import RelatorioLivros from "./pages/RelatorioLivros";
 
 function App() {
   return (
@@ -15,10 +15,10 @@ function App() {
       <div className="container mt-4">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/books" element={<Books />} />
-          <Route path="/authors" element={<Authors />} />
-          <Route path="/subjects" element={<Subjects />} />
-          <Route path="/reports" element={<BookReport />} /> {/* Nova rota para o relatório */}
+          <Route path="/livros" element={<Livros />} />
+          <Route path="/autores" element={<Autores />} />
+          <Route path="/assuntos" element={<Assuntos />} />
+          <Route path="/relatorios" element={<RelatorioLivros />} />
         </Routes>
       </div>
     </BrowserRouter>
